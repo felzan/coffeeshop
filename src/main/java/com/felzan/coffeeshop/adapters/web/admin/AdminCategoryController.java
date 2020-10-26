@@ -32,7 +32,7 @@ public class AdminCategoryController {
 
     @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
     public void post(@RequestBody CreateCategoryRequest category) {
-        createCategory.create(category);
+        createCategory.create(category.toCategoryDTO());
     }
 
     @PutMapping(value = "{categoryId}", consumes = APPLICATION_JSON_VALUE)
