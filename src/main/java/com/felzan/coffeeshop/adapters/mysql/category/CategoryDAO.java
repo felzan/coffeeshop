@@ -1,6 +1,5 @@
 package com.felzan.coffeeshop.adapters.mysql.category;
 
-import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryRequest;
 import com.felzan.coffeeshop.application.models.Category;
 import com.felzan.coffeeshop.application.ports.in.FindCategory;
 import com.felzan.coffeeshop.application.ports.in.FindCategoryCriteria;
@@ -28,10 +27,5 @@ public class CategoryDAO implements SaveCategory, FindCategory {
         CategoryEntity categoryEntity = new CategoryEntity(category);
 
         categoryRepository.save(categoryEntity);
-    }
-
-    @Override
-    public void save(Long id, CreateCategoryRequest category) {
-
     }
 }

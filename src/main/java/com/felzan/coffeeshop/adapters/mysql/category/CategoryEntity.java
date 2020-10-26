@@ -32,6 +32,7 @@ public class CategoryEntity extends BaseEntity {
     List<ProductEntity> products;
 
     public CategoryEntity(Category category) {
+        setId(category.getId());
         this.name = category.getName();
         this.description = category.getDescription();
         this.image = category.getImage();

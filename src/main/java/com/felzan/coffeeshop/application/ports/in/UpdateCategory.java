@@ -1,7 +1,7 @@
 package com.felzan.coffeeshop.application.ports.in;
 
-import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryRequest;
+import com.felzan.coffeeshop.application.dto.CategoryDTO;
 
 public interface UpdateCategory {
-    void update(Long categoryId, CreateCategoryRequest category);
+    void update(Long categoryId, CategoryDTO category);
 }
