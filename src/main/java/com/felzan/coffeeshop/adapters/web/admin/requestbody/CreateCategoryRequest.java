@@ -1,7 +1,7 @@
 package com.felzan.coffeeshop.adapters.web.admin.requestbody;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.felzan.coffeeshop.application.models.Product;
+import com.felzan.coffeeshop.application.dto.CategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +19,15 @@ public class CreateCategoryRequest {
     // receive image somehow then upload to S3
     String imageUrl;
     boolean visible;
-    List<Product> products;
+    List<Integer> productsIds;
+
+    public CategoryDTO toCategoryDTO() {
+        return CategoryDTO.builder()
+                .name(getName())
+                .description(getDescription())
+                .image(getImageUrl())
+                .visible(isVisible())
+                .productsIds(getProductsIds())
+                .build();
+    }
 }
