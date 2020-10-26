@@ -1,6 +1,7 @@
 package com.felzan.coffeeshop.adapters.mysql.category;
 
 import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryRequest;
+import com.felzan.coffeeshop.application.models.Category;
 import com.felzan.coffeeshop.application.ports.in.FindCategory;
 import com.felzan.coffeeshop.application.ports.in.FindCategoryCriteria;
 import com.felzan.coffeeshop.application.ports.out.SaveCategory;
@@ -23,15 +24,9 @@ public class CategoryDAO implements SaveCategory, FindCategory {
     }
 
     @Override
-    public void save(CreateCategoryRequest category) {
-        String status = "CREATED";
-        CategoryEntity categoryEntity = CategoryEntity.builder()
-                .name(category.getName())
-                .description(category.getDescription())
-                .image(category.getImageUrl())
-                .status(status)
-                .visible(category.isVisible())
-                .build();
+    public void save(Category category) {
+        CategoryEntity categoryEntity = new CategoryEntity(category);
+
         categoryRepository.save(categoryEntity);
     }
 
