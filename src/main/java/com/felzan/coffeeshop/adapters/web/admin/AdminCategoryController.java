@@ -38,6 +38,6 @@ public class AdminCategoryController {
     @PutMapping(value = "{categoryId}", consumes = APPLICATION_JSON_VALUE)
     public void put(@RequestBody CreateCategoryRequest category,
                     @PathVariable("categoryId") Long categoryId) {
-        updateCategory.update(categoryId, category);
+        updateCategory.update(categoryId, category.toCategoryDTO());
     }
 }

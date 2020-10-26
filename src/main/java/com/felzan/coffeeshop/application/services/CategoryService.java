@@ -1,6 +1,5 @@
 package com.felzan.coffeeshop.application.services;
 
-import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryRequest;
 import com.felzan.coffeeshop.application.dto.CategoryDTO;
 import com.felzan.coffeeshop.application.models.Category;
 import com.felzan.coffeeshop.application.models.Product;
@@ -39,7 +38,9 @@ public class CategoryService implements CreateCategory, UpdateCategory {
     }
 
     @Override
-    public void update(Long id, CreateCategoryRequest category) {
-        saveCategory.save(id, category);
+    public void update(Long id, CategoryDTO dto) {
+        Category category = dto.toCategory();
+        category.setId(id);
+        saveCategory.save(category);
     }
 }
