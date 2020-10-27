@@ -2,6 +2,7 @@ package com.felzan.coffeeshop.application.services;
 
 import com.felzan.coffeeshop.application.dto.CategoryDTO;
 import com.felzan.coffeeshop.application.models.Category;
+import com.felzan.coffeeshop.application.ports.out.DeleteCategory;
 import com.felzan.coffeeshop.application.ports.out.SaveCategory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +22,8 @@ class CategoryServiceTest {
     private CategoryService categoryService;
     @Mock
     private SaveCategory saveCategory;
+    @Mock
+    private DeleteCategory deleteCategory;
 
     @Test
     @DisplayName("Should create a category")
@@ -35,6 +38,16 @@ class CategoryServiceTest {
         categoryService.create(categoryDTO);
 
         verify(saveCategory, times(1)).save(any(Category.class));
+    }
+
+    @Test
+    @DisplayName("Should call delete category")
+    void delete() {
+        Long categoryId = 1L;
+
+        categoryService.delete(categoryId);
+
+        verify(deleteCategory, times(1)).delete(categoryId);
     }
 
     @Test

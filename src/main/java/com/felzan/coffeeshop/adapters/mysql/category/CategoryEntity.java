@@ -6,11 +6,10 @@ import com.felzan.coffeeshop.application.models.Category;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
@@ -20,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @Entity(name = "category")
-@Table(name = "categories")
+@Table(name = "category")
 public class CategoryEntity extends BaseEntity {
 
     String name;
@@ -28,7 +27,10 @@ public class CategoryEntity extends BaseEntity {
     String image;
     String status;
     boolean visible;
-    @ManyToMany
+    @ManyToMany(cascade = {MERGE, PERSIST,DETACH})
+    @JoinTable(name = "category_product",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     List<ProductEntity> products;
 
     public CategoryEntity(Category category) {

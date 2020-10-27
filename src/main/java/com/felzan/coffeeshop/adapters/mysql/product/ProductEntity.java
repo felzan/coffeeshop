@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @Entity(name = "product")
-@Table(name = "products")
+@Table(name = "product")
 public class ProductEntity extends BaseEntity {
 
     String name;
@@ -29,6 +29,6 @@ public class ProductEntity extends BaseEntity {
     String image;
     Integer price;
     String sku;
-    @ManyToMany
+    @ManyToMany(mappedBy = "products")
     List<CategoryEntity> categories;
 }

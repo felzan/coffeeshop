@@ -1,19 +1,26 @@
 package com.felzan.coffeeshop.adapters.mysql;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @MappedSuperclass
 public class BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    @CreatedDate
+    @Column(updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
+    @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime updatedAt;
 
     @PrePersist

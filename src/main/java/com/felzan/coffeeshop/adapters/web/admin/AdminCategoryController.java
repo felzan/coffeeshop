@@ -2,10 +2,7 @@ package com.felzan.coffeeshop.adapters.web.admin;
 
 import com.felzan.coffeeshop.adapters.mysql.category.CategoryEntity;
 import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryRequest;
-import com.felzan.coffeeshop.application.ports.in.CreateCategory;
-import com.felzan.coffeeshop.application.ports.in.FindCategory;
-import com.felzan.coffeeshop.application.ports.in.FindCategoryCriteria;
-import com.felzan.coffeeshop.application.ports.in.UpdateCategory;
+import com.felzan.coffeeshop.application.ports.in.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,8 +19,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AdminCategoryController {
 
     FindCategory findCategory;
-    CreateCategory createCategory;
-    UpdateCategory updateCategory;
+    CreateCategoryIn createCategoryIn;
+    UpdateCategoryIn updateCategoryIn;
+    DeleteCategoryIn deleteCategoryIn;
 
     @GetMapping(value = "")
     public ResponseEntity<Iterable<CategoryEntity>> get(@RequestBody(required = false) FindCategoryCriteria criteria) {
@@ -32,12 +30,17 @@ public class AdminCategoryController {
 
     @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
     public void post(@RequestBody CreateCategoryRequest category) {
-        createCategory.create(category.toCategoryDTO());
+        createCategoryIn.create(category.toCategoryDTO());
     }
 
     @PutMapping(value = "{categoryId}", consumes = APPLICATION_JSON_VALUE)
     public void put(@RequestBody CreateCategoryRequest category,
                     @PathVariable("categoryId") Long categoryId) {
-        updateCategory.update(categoryId, category.toCategoryDTO());
+        updateCategoryIn.update(categoryId, category.toCategoryDTO());
+    }
+
+    @DeleteMapping(value = "{categoryId}")
+    public void delete(@PathVariable("categoryId") Long categoryId) {
+        deleteCategoryIn.delete(categoryId);
     }
 }
