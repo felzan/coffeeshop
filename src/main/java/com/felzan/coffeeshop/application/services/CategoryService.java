@@ -29,8 +29,9 @@ public class CategoryService implements CreateCategoryIn, UpdateCategoryIn, Dele
     public void create(CategoryDTO dto) {
         // TODO get products by ids
         List<Product> productList = new ArrayList<>();
-        Product product = new Product();
-        product.setId(1L);
+        Product product = Product.builder()
+                .id(1L)
+                .build();
         productList.add(product);
         Category category = dto.toCategory();
         category.setProducts(productList);
@@ -42,7 +43,13 @@ public class CategoryService implements CreateCategoryIn, UpdateCategoryIn, Dele
 
     @Override
     public void update(Long id, CategoryDTO dto) {
+        List<Product> productList = new ArrayList<>();
+        Product product = Product.builder()
+                .id(1L)
+                .build();
+        productList.add(product);
         Category category = dto.toCategory();
+        category.setProducts(productList);
         category.setId(id);
         saveCategory.save(category);
     }

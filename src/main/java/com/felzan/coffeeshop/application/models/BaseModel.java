@@ -1,6 +1,7 @@
 package com.felzan.coffeeshop.application.models;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * </ul>
  */
 @Data
+@SuperBuilder
 public class BaseModel {
 
     private Long id;
