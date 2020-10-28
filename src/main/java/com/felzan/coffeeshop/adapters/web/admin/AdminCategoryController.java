@@ -2,7 +2,7 @@ package com.felzan.coffeeshop.adapters.web.admin;
 
 import com.felzan.coffeeshop.adapters.mysql.category.CategoryEntity;
 import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryRequest;
-import com.felzan.coffeeshop.application.ports.in.*;
+import com.felzan.coffeeshop.application.ports.in.category.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

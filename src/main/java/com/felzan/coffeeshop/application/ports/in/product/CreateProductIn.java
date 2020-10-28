@@ -1,4 +1,4 @@
-package com.felzan.coffeeshop.application.ports.in;
+package com.felzan.coffeeshop.application.ports.in.product;
 
 import com.felzan.coffeeshop.application.dto.ProductDTO;
 
