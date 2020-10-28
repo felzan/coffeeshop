@@ -1,8 +1,8 @@
 package com.felzan.coffeeshop.adapters.mysql.category;
 
 import com.felzan.coffeeshop.application.models.Category;
-import com.felzan.coffeeshop.application.ports.in.FindCategory;
-import com.felzan.coffeeshop.application.ports.in.FindCategoryCriteria;
+import com.felzan.coffeeshop.application.ports.in.category.FindCategory;
+import com.felzan.coffeeshop.application.ports.in.category.FindCategoryCriteria;
 import com.felzan.coffeeshop.application.ports.out.DeleteCategory;
 import com.felzan.coffeeshop.application.ports.out.SaveCategory;
 import lombok.RequiredArgsConstructor;

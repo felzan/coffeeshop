@@ -1,4 +1,4 @@
-package com.felzan.coffeeshop.application.ports.in;
+package com.felzan.coffeeshop.application.ports.in.category;
 
 import lombok.Data;
 
