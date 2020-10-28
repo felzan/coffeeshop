@@ -3,7 +3,9 @@ package com.felzan.coffeeshop.application.services;
 import com.felzan.coffeeshop.application.dto.ProductDTO;
 import com.felzan.coffeeshop.application.models.Product;
 import com.felzan.coffeeshop.application.ports.in.product.CreateProductIn;
+import com.felzan.coffeeshop.application.ports.in.product.DeleteProductIn;
 import com.felzan.coffeeshop.application.ports.in.product.UpdateProductIn;
+import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
 import com.felzan.coffeeshop.application.ports.out.SaveProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,9 +16,10 @@ import static lombok.AccessLevel.PRIVATE;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = PRIVATE)
-public class ProductService implements CreateProductIn, UpdateProductIn {
+public class ProductService implements CreateProductIn, UpdateProductIn, DeleteProductIn {
 
     SaveProduct saveProduct;
+    DeleteProduct deleteProduct;
 
     @Override
     public void create(ProductDTO dto) {
@@ -28,5 +31,10 @@ public class ProductService implements CreateProductIn, UpdateProductIn {
         Product product = productDTO.toProduct();
         product.setId(productId);
         saveProduct.save(product);
+    }
+
+    @Override
+    public void delete(Long productId) {
+        deleteProduct.delete(productId);
     }
 }
