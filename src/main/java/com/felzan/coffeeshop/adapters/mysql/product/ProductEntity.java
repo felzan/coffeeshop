@@ -14,7 +14,8 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class ProductEntity extends BaseEntity {
     String image;
     Integer price;
     String sku;
-    @ManyToMany(mappedBy = "products", fetch = LAZY)
+    @ManyToMany(targetEntity = CategoryEntity.class, mappedBy = "products", fetch = LAZY)
     List<CategoryEntity> categories;
 
     public ProductEntity(Product product) {
@@ -41,5 +42,17 @@ public class ProductEntity extends BaseEntity {
         setImage(product.getImage());
         setPrice(product.getPrice());
         setSku(product.getSku());
+    }
+
+    public Product toProduct() {
+        return Product.builder()
+                .id(getId())
+                .name(getName())
+                .description(getDescription())
+                .available(isAvailable())
+                .image(getImage())
+                .price(getPrice())
+                .sku(getSku())
+                .build();
     }
 }

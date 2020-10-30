@@ -3,23 +3,25 @@ package com.felzan.coffeeshop.application.dto;
 
 import com.felzan.coffeeshop.application.models.Category;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Data
-@Builder
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryDTO {
+public class CategoryDTO extends BaseDTO {
 
     String name;
     String description;
     String image;
     String status;
     boolean visible;
-    List<Integer> productsIds;
+    List<Long> productsIds;
 
     public Category toCategory() {
         return Category.builder()

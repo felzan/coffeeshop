@@ -3,6 +3,7 @@ package com.felzan.coffeeshop.adapters.mysql.category;
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
 import com.felzan.coffeeshop.adapters.mysql.product.ProductEntity;
 import com.felzan.coffeeshop.application.models.Category;
+import com.felzan.coffeeshop.application.models.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,12 +11,12 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class CategoryEntity extends BaseEntity {
     String image;
     String status;
     boolean visible;
-    @ManyToMany(cascade = {MERGE, PERSIST}, fetch = LAZY)
+    @ManyToMany(targetEntity = ProductEntity.class, cascade = ALL, fetch = LAZY)
     @JoinTable(name = "category_product",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -48,6 +49,24 @@ public class CategoryEntity extends BaseEntity {
         setStatus(category.getStatus());
         setVisible(category.isVisible());
         setProducts(products);
+    }
+
+    public Category toCategory() {
+        List<Product> products = getProducts().stream()
+                .map(ProductEntity::toProduct)
+                .collect(Collectors.toList());
+
+        return Category.builder()
+                .id(getId())
+                .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .name(getName())
+                .description(getDescription())
+                .image(getImage())
+                .status(getStatus())
+                .visible(isVisible())
+                .products(products)
+                .build();
     }
 
 }

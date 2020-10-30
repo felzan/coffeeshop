@@ -19,7 +19,7 @@ public class CreateCategoryRequest {
     // receive image somehow then upload to S3
     String imageUrl;
     boolean visible;
-    List<Integer> productsIds;
+    List<Long> productsIds;
 
     public CategoryDTO toCategoryDTO() {
         return CategoryDTO.builder()
