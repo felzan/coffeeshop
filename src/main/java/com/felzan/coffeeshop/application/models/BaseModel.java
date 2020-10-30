@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @SuperBuilder
-public class BaseModel {
+public abstract class BaseModel {
 
     private Long id;
     private LocalDateTime createdAt;
