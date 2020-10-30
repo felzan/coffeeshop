@@ -1,33 +1,32 @@
 package com.felzan.coffeeshop.adapters.web.admin.requestbody;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.felzan.coffeeshop.application.dto.CategoryDTO;
+import com.felzan.coffeeshop.application.dto.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateCategoryRequest {
+public class UpdateProductRequest {
 
     String name;
     String description;
-    // receive image somehow then upload to S3
-    String imageUrl;
-    boolean visible;
-    List<Long> productsIds;
+    boolean available;
+    String image;
+    Integer price;
+    String sku;
 
-    public CategoryDTO toCategoryDTO() {
-        return CategoryDTO.builder()
+    public ProductDTO toDTO() {
+        return ProductDTO.builder()
                 .name(getName())
                 .description(getDescription())
-                .image(getImageUrl())
-                .visible(isVisible())
-                .productsIds(getProductsIds())
+                .available(isAvailable())
+                .image(getImage())
+                .price(getPrice())
+                .sku(getSku())
                 .build();
     }
 }

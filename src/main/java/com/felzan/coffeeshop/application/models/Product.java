@@ -1,13 +1,18 @@
 package com.felzan.coffeeshop.application.models;
 
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Data
+@SuperBuilder
+@FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product extends BaseModel {
 
     String name;
