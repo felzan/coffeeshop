@@ -10,21 +10,18 @@ import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
 import com.felzan.coffeeshop.application.ports.out.FindProduct;
 import com.felzan.coffeeshop.application.ports.out.SaveProduct;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static lombok.AccessLevel.PRIVATE;
-
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = PRIVATE)
+//@FieldDefaults(makeFinal = true, level = PRIVATE)
 public class ProductService implements CreateProductIn, DeleteProductIn, FindProductIn, UpdateProductIn {
 
-    SaveProduct saveProduct;
-    DeleteProduct deleteProduct;
-    FindProduct findProduct;
+    private final SaveProduct saveProduct;
+    private final DeleteProduct deleteProduct;
+    private final FindProduct findProduct;
 
     @Override
     public void create(ProductDTO dto) {
