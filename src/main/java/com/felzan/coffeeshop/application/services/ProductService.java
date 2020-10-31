@@ -9,18 +9,18 @@ import com.felzan.coffeeshop.application.ports.in.product.UpdateProductIn;
 import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
 import com.felzan.coffeeshop.application.ports.out.FindProduct;
 import com.felzan.coffeeshop.application.ports.out.SaveProduct;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ProductService implements CreateProductIn, DeleteProductIn, FindProductIn, UpdateProductIn {
 
-    private final SaveProduct saveProduct;
-    private final DeleteProduct deleteProduct;
-    private final FindProduct findProduct;
+    SaveProduct saveProduct;
+    DeleteProduct deleteProduct;
+    FindProduct findProduct;
 
     @Override
     public void create(ProductDTO dto) {
