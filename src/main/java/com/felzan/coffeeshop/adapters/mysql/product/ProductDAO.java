@@ -5,17 +5,21 @@ import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
 import com.felzan.coffeeshop.application.ports.out.FindProduct;
 import com.felzan.coffeeshop.application.ports.out.SaveProduct;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = PRIVATE)
 public class ProductDAO implements FindProduct, DeleteProduct, SaveProduct {
 
-    private final ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Override
     public List<Product> findAll() {

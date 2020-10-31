@@ -4,23 +4,26 @@ import com.felzan.coffeeshop.adapters.web.admin.requestbody.CreateCategoryReques
 import com.felzan.coffeeshop.application.models.Category;
 import com.felzan.coffeeshop.application.ports.in.category.*;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.felzan.coffeeshop.adapters.web.admin.ConstantsController.ADMIN_CATEGORY;
+import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = PRIVATE)
 @RequestMapping(value = ADMIN_CATEGORY, produces = APPLICATION_JSON_VALUE)
 public class AdminCategoryController {
 
-    private final FindCategoryIn findCategoryIn;
-    private final CreateCategoryIn createCategoryIn;
-    private final UpdateCategoryIn updateCategoryIn;
-    private final DeleteCategoryIn deleteCategoryIn;
+    FindCategoryIn findCategoryIn;
+    CreateCategoryIn createCategoryIn;
+    UpdateCategoryIn updateCategoryIn;
+    DeleteCategoryIn deleteCategoryIn;
 
     @GetMapping(value = "")
     public ResponseEntity<List<Category>> get(@RequestBody(required = false) FindCategoryCriteria criteria) {

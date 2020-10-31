@@ -9,13 +9,17 @@ import com.felzan.coffeeshop.application.ports.in.product.UpdateProductIn;
 import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
 import com.felzan.coffeeshop.application.ports.out.FindProduct;
 import com.felzan.coffeeshop.application.ports.out.SaveProduct;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = PRIVATE)
 public class ProductService implements CreateProductIn, DeleteProductIn, FindProductIn, UpdateProductIn {
 
     SaveProduct saveProduct;
