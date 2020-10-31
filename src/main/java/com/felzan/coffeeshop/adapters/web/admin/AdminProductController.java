@@ -7,9 +7,7 @@ import com.felzan.coffeeshop.application.ports.in.product.CreateProductIn;
 import com.felzan.coffeeshop.application.ports.in.product.DeleteProductIn;
 import com.felzan.coffeeshop.application.ports.in.product.FindProductIn;
 import com.felzan.coffeeshop.application.ports.in.product.UpdateProductIn;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,14 +18,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequestMapping(value = ADMIN_PRODUCT, produces = APPLICATION_JSON_VALUE)
 public class AdminProductController {
 
-    CreateProductIn createProductIn;
-    DeleteProductIn deleteProductIn;
-    FindProductIn findProductIn;
-    UpdateProductIn updateProductIn;
+    private final CreateProductIn createProductIn;
+    private final DeleteProductIn deleteProductIn;
+    private final FindProductIn findProductIn;
+    private final UpdateProductIn updateProductIn;
 
     @GetMapping(value = "")
     public ResponseEntity<List<Product>> get() {

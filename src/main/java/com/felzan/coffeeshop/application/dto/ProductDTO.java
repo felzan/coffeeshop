@@ -2,24 +2,21 @@ package com.felzan.coffeeshop.application.dto;
 
 
 import com.felzan.coffeeshop.application.models.Product;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDTO extends BaseDTO {
 
-    String name;
-    String description;
-    boolean available;
-    String image;
-    Integer price;
-    String sku;
+    private String name;
+    private String description;
+    private boolean available;
+    private String image;
+    private Integer price;
+    private String sku;
 
     public ProductDTO(Product product) {
         super(product.getId(), product.getCreatedAt(), product.getUpdatedAt());

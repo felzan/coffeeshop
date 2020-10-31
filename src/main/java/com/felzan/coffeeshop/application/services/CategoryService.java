@@ -8,23 +8,19 @@ import com.felzan.coffeeshop.application.ports.out.DeleteCategory;
 import com.felzan.coffeeshop.application.ports.out.FindCategory;
 import com.felzan.coffeeshop.application.ports.out.SaveCategory;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static lombok.AccessLevel.PRIVATE;
-
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = PRIVATE)
 public class CategoryService implements CreateCategoryIn, FindCategoryIn, UpdateCategoryIn, DeleteCategoryIn {
 
-    ProductService productService;
+    private final ProductService productService;
 
-    SaveCategory saveCategory;
-    FindCategory findCategory;
-    DeleteCategory deleteCategory;
+    private final SaveCategory saveCategory;
+    private final FindCategory findCategory;
+    private final DeleteCategory deleteCategory;
 
     @Override
     public void create(CategoryDTO dto) {
