@@ -6,21 +6,17 @@ import com.felzan.coffeeshop.application.ports.out.DeleteCategory;
 import com.felzan.coffeeshop.application.ports.out.FindCategory;
 import com.felzan.coffeeshop.application.ports.out.SaveCategory;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static lombok.AccessLevel.PRIVATE;
-
 @Component
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = PRIVATE)
 public class CategoryDAO implements SaveCategory, FindCategory, DeleteCategory {
 
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public List<Category> find(FindCategoryCriteria criteria) {

@@ -2,16 +2,17 @@ package com.felzan.coffeeshop.application.dto;
 
 
 import com.felzan.coffeeshop.application.models.Product;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = PRIVATE)
 public class ProductDTO extends BaseDTO {
 
     String name;
