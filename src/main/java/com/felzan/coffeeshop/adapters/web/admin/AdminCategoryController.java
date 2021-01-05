@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.felzan.coffeeshop.adapters.web.admin.ConstantsController.ADMIN_CATEGORY;
+import static com.felzan.coffeeshop.adapters.web.ConstantsController.ADMIN_CATEGORY;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

@@ -1,4 +1,4 @@
-package com.felzan.coffeeshop.adapters.web.admin;
+package com.felzan.coffeeshop.adapters.web;
 
 public interface ConstantsController {
 
@@ -9,6 +9,8 @@ public interface ConstantsController {
 
     String ADMIN_CATEGORY = BASE + "/" + ADMIN + "/" + CATEGORY;
     String ADMIN_PRODUCT = BASE + "/" + ADMIN + "/" + PRODUCT;
+
+    String USER = BASE + "/users";
 
 }
 
