@@ -2,6 +2,7 @@ package com.felzan.coffeeshop.adapters.web.cart;
 
 import com.felzan.coffeeshop.adapters.web.cart.requestbody.CartRequest;
 import com.felzan.coffeeshop.application.dto.CartDTO;
+import com.felzan.coffeeshop.application.models.Cart;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +21,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CartController {
 
     CartIn cartIn;
+
+    @GetMapping(value = "")
+    public ResponseEntity<Cart> getLastCartByUser() {
+        return ResponseEntity.ok(cartIn.findLast());
+    }
 
     @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestBody CartRequest cartRequest) {

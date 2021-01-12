@@ -6,6 +6,7 @@ import com.felzan.coffeeshop.application.models.Cart;
 import com.felzan.coffeeshop.application.models.CartItem;
 import com.felzan.coffeeshop.application.models.Product;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
+import com.felzan.coffeeshop.application.ports.out.FindCart;
 import com.felzan.coffeeshop.application.ports.out.FindProduct;
 import com.felzan.coffeeshop.application.ports.out.SaveCart;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class CartService implements CartIn {
 
     SaveCart saveCart;
+    FindCart findCart;
     FindProduct findProduct;
 
     @Override
@@ -53,5 +55,10 @@ public class CartService implements CartIn {
         Cart cart = dto.toCart();
         cart.setItemList(cartItems);
         saveCart.save(cart);
+    }
+
+    @Override
+    public Cart findLast() {
+        return findCart.findLast();
     }
 }

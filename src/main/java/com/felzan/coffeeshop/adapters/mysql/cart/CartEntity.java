@@ -47,7 +47,7 @@ public class CartEntity extends BaseEntity {
         setSessionId(cart.getSessionId());
     }
 
-    public Cart toProduct() {
+    public Cart toCart() {
         List<CartItem> items = getCartItems().stream()
                 .map(CartItemEntity::toCartItem)
                 .collect(Collectors.toList());

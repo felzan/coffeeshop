@@ -4,6 +4,7 @@ import com.felzan.coffeeshop.adapters.mysql.cartitem.CartItemRepository;
 import com.felzan.coffeeshop.adapters.mysql.user.UserEntity;
 import com.felzan.coffeeshop.adapters.mysql.user.UserRepository;
 import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.ports.out.FindCart;
 import com.felzan.coffeeshop.application.ports.out.SaveCart;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = PRIVATE)
-public class CartDAO implements SaveCart {
+public class CartDAO implements SaveCart, FindCart {
 
     CartRepository cartRepository;
     CartItemRepository cartItemRepository;
@@ -32,5 +33,13 @@ public class CartDAO implements SaveCart {
 
         cartRepository.save(entity);
         cartItemRepository.saveAll(entity.getCartItems());
+    }
+
+    @Override
+    public Cart findLast() {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity userEntity = userRepository.findByUsername(currentUser.getUsername()).orElseThrow(RuntimeException::new);
+        // TODO: verify user has cart
+        return cartRepository.findTopByUser_Id(userEntity.getId()).toCart();
     }
 }
