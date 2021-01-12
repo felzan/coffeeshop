@@ -2,6 +2,7 @@ package com.felzan.coffeeshop.application.services;
 
 import com.felzan.coffeeshop.application.config.JWTTokenProvider;
 import com.felzan.coffeeshop.application.dto.UserDTO;
+import com.felzan.coffeeshop.application.exceptions.PasswordNotMatchException;
 import com.felzan.coffeeshop.application.models.User;
 import com.felzan.coffeeshop.application.ports.in.user.UserIn;
 import com.felzan.coffeeshop.application.ports.out.FindUser;
@@ -37,8 +38,7 @@ public class UserService implements UserIn {
     public String login(UserDTO userDTO) {
         User userFound = findUser.findByUsername(userDTO.getUsername());
         if (!passwordEncoder.matches(userDTO.getPassword(), userFound.getPassword())) {
-            //TODO: User password not match exception
-            throw new RuntimeException("User password not match.");
+            throw new PasswordNotMatchException();
         }
         return jwtTokenProvider.generateToken(userDTO);
     }

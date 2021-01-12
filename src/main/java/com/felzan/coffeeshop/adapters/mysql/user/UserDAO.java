@@ -1,5 +1,6 @@
 package com.felzan.coffeeshop.adapters.mysql.user;
 
+import com.felzan.coffeeshop.adapters.mysql.exceptions.UserNotFoundException;
 import com.felzan.coffeeshop.application.models.User;
 import com.felzan.coffeeshop.application.ports.out.FindUser;
 import com.felzan.coffeeshop.application.ports.out.SaveUser;
@@ -21,8 +22,7 @@ public class UserDAO implements SaveUser, FindUser {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                // TODO: User not found exception
-                .orElseThrow(RuntimeException::new)
+                .orElseThrow(UserNotFoundException::new)
                 .toUser();
     }
 
