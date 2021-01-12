@@ -12,5 +12,7 @@ public interface ConstantsController {
 
     String USER = BASE + "/users";
 
+    String CART = BASE + "/carts";
+
 }
 
