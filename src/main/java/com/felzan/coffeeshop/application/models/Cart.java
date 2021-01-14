@@ -20,4 +20,5 @@ public class Cart extends BaseModel {
     String sessionId;
     Long userId;
     List<CartItem> itemList;
+    String status;
 }

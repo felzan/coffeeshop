@@ -31,6 +31,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class CartEntity extends BaseEntity {
 
     String sessionId;
+    String status;
     @ManyToOne(fetch = LAZY)
     UserEntity user;
     @OneToMany(targetEntity = CartItemEntity.class, mappedBy = "cart", fetch = EAGER)
@@ -45,6 +46,7 @@ public class CartEntity extends BaseEntity {
 
         setCartItems(items);
         setSessionId(cart.getSessionId());
+        setStatus(cart.getStatus());
     }
 
     public Cart toCart() {
@@ -58,6 +60,7 @@ public class CartEntity extends BaseEntity {
                 .updatedAt(getUpdatedAt())
 
                 .sessionId(getSessionId())
+                .status(getStatus())
                 .userId(getUser().getId())
                 .itemList(items)
                 .build();
