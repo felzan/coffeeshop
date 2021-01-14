@@ -20,7 +20,7 @@ public class CartDTO extends BaseDTO {
     String sessionId;
     Long userId;
     Map<Long, Integer> cartItems;
-
+    String status;
 
 //    public CartDTO(Product product) {
 //    }
@@ -30,6 +30,7 @@ public class CartDTO extends BaseDTO {
                 .id(getId())
                 .sessionId(getSessionId())
                 .userId(getUserId())
+                .status(getStatus())
                 .build();
     }
 }

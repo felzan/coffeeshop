@@ -27,9 +27,19 @@ public class CartService implements CartIn {
     SaveCart saveCart;
     FindCart findCart;
     FindProduct findProduct;
+    PaymentService payment;
 
     @Override
     public void save(CartDTO dto) {
+        if (isCheckout(dto)) {
+            String currentStatus;
+            if (payment.execute()) {
+                currentStatus = "PAID";
+            } else {
+                currentStatus = "PAYMENT_FAILED";
+            }
+            dto.setStatus(currentStatus);
+        }
         List<Long> productsIdsList = new ArrayList<>(dto.getCartItems().keySet());
         List<Product> products = findProduct.FindByIds(productsIdsList);
         if (products.size() < productsIdsList.size()) {
@@ -55,6 +65,16 @@ public class CartService implements CartIn {
         Cart cart = dto.toCart();
         cart.setItemList(cartItems);
         saveCart.save(cart);
+    }
+
+    private boolean isCheckout(CartDTO dto) {
+//        TODO: get last status and check
+//        if (dto.getStatus() != null && dto.getStatus().equals("PAID")) {
+//            throw new CannotUpdateCartException();
+//        }
+        return dto.getStatus() != null
+                && dto.getStatus().equals("CHECKOUT")
+                && !dto.getStatus().equals("PAID");
     }
 
     @Override

@@ -17,12 +17,14 @@ public class CartRequest {
     String sessionId;
     Long userId;
     Map<Long, Integer> cartItems;
+    String status;
 
     public CartDTO toDTO() {
         return CartDTO.builder()
                 .sessionId(getSessionId())
                 .userId(getUserId())
                 .cartItems(getCartItems())
+                .status(getStatus())
                 .build();
     }
 

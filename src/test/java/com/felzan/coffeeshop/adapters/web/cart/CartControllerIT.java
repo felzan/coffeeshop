@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -62,11 +63,11 @@ class CartControllerIT {
     @Test
     @DisplayName(value = "An user with valid token should be able to create a new cart.")
     void create() throws Exception {
+        productService.create(ProductDTO.builder().name("Coca Cola").build());
         String token = userService.create(UserDTO.builder().username("admin").password("admin").build());
 
         CartRequest cartRequest = new CartRequest();
         cartRequest.setSessionId("sessionId");
-        cartRequest.setUserId(null);
         cartRequest.setCartItems(Map.of(1L, 6));
 
         mvc.perform(post("/api/v1/carts/")
@@ -76,6 +77,27 @@ class CartControllerIT {
 
         List<CartEntity> cartsFound = cartRepository.findAll();
         assertEquals(1, cartsFound.size());
+    }
+
+    @Test
+    @DisplayName(value = "An user with valid cart should be able to order.")
+    void checkout() throws Exception {
+        productService.create(ProductDTO.builder().name("Coca Cola").build());
+        String token = userService.create(UserDTO.builder().username("admin").password("admin").build());
+
+        CartRequest cartRequest = new CartRequest();
+        cartRequest.setSessionId("sessionId");
+        cartRequest.setStatus("CHECKOUT");
+        cartRequest.setCartItems(Map.of(1L, 6));
+
+        mvc.perform(post("/api/v1/carts/")
+                .header("Authorization", token)
+                .contentType(APPLICATION_JSON)
+                .content(toJson(cartRequest)));
+
+        List<CartEntity> cartsFound = cartRepository.findAll();
+        assertEquals(1, cartsFound.size());
+        assertNotNull(cartsFound.get(0).getStatus());
     }
 
     @Test
