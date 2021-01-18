@@ -3,6 +3,7 @@ package com.felzan.coffeeshop.adapters.mysql.cart;
 import com.felzan.coffeeshop.adapters.mysql.cartitem.CartItemRepository;
 import com.felzan.coffeeshop.adapters.mysql.user.UserEntity;
 import com.felzan.coffeeshop.adapters.mysql.user.UserRepository;
+import com.felzan.coffeeshop.application.exceptions.NotFoundException;
 import com.felzan.coffeeshop.application.models.Cart;
 import com.felzan.coffeeshop.application.ports.out.FindCart;
 import com.felzan.coffeeshop.application.ports.out.SaveCart;
@@ -51,5 +52,10 @@ public class CartDAO implements SaveCart, FindCart {
         return cartRepository.findAll().stream()
                 .map(cartEntity -> cartEntity.toCart())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Cart findOne(Long id) {
+        return cartRepository.findById(id).orElseThrow(NotFoundException::new).toCart();
     }
 }

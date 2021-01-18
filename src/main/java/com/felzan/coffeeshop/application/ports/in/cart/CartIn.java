@@ -12,4 +12,6 @@ public interface CartIn {
     Cart findLast();
 
     List<Cart> findAll();
+
+    Cart findOne(Long id);
 }

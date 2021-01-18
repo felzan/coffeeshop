@@ -86,4 +86,9 @@ public class CartService implements CartIn {
     public List<Cart> findAll() {
         return findCart.findAll();
     }
+
+    @Override
+    public Cart findOne(Long id) {
+        return findCart.findOne(id);
+    }
 }
