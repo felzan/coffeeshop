@@ -9,6 +9,7 @@ public interface ConstantsController {
 
     String ADMIN_CATEGORY = BASE + "/" + ADMIN + "/" + CATEGORY;
     String ADMIN_PRODUCT = BASE + "/" + ADMIN + "/" + PRODUCT;
+    String ADMIN_CART = BASE + "/" + ADMIN + "/carts";
 
     String USER = BASE + "/users";
 

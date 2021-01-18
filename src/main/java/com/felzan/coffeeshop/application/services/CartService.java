@@ -81,4 +81,9 @@ public class CartService implements CartIn {
     public Cart findLast() {
         return findCart.findLast();
     }
+
+    @Override
+    public List<Cart> findAll() {
+        return findCart.findAll();
+    }
 }

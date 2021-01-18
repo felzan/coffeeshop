@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Component
@@ -41,5 +44,12 @@ public class CartDAO implements SaveCart, FindCart {
         UserEntity userEntity = userRepository.findByUsername(currentUser.getUsername()).orElseThrow(RuntimeException::new);
         // TODO: verify user has cart
         return cartRepository.findTopByUser_Id(userEntity.getId()).toCart();
+    }
+
+    @Override
+    public List<Cart> findAll() {
+        return cartRepository.findAll().stream()
+                .map(cartEntity -> cartEntity.toCart())
+                .collect(Collectors.toList());
     }
 }
