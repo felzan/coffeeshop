@@ -8,10 +8,9 @@ import java.util.List;
 public interface CartIn {
 
     void save(CartDTO dto);
-
     Cart findLast();
-
     List<Cart> findAll();
-
     Cart findOne(Long id);
+
+    void updateStatus(Long id, String string);
 }

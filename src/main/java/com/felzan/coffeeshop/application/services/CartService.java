@@ -91,4 +91,11 @@ public class CartService implements CartIn {
     public Cart findOne(Long id) {
         return findCart.findOne(id);
     }
+
+    @Override
+    public void updateStatus(Long id, String status) {
+        Cart cart = findCart.findOne(id);
+        cart.setStatus(status);
+        saveCart.save(cart);
+    }
 }

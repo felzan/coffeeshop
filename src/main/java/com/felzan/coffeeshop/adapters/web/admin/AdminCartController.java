@@ -5,10 +5,7 @@ import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +29,13 @@ public class AdminCartController {
     @GetMapping(value = "{cartId}")
     public ResponseEntity<Cart> findOne(@PathVariable Long cartId) {
         return ResponseEntity.ok(cartIn.findOne(cartId));
+    }
+
+    @PatchMapping(value = "{cartId}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long cartId,
+                                          @RequestParam String status) {
+        cartIn.updateStatus(cartId, status);
+        return ResponseEntity.ok().build();
     }
 
 }
