@@ -81,4 +81,21 @@ public class CartService implements CartIn {
     public Cart findLast() {
         return findCart.findLast();
     }
+
+    @Override
+    public List<Cart> findAll() {
+        return findCart.findAll();
+    }
+
+    @Override
+    public Cart findOne(Long id) {
+        return findCart.findOne(id);
+    }
+
+    @Override
+    public void updateStatus(Long id, String status) {
+        Cart cart = findCart.findOne(id);
+        cart.setStatus(status);
+        saveCart.save(cart);
+    }
 }
