@@ -3,7 +3,6 @@ plugins {
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
   id 'org.asciidoctor.convert' version '1.5.8'
   id 'java'
-  id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 group = 'com.felzan'
@@ -37,16 +36,18 @@ dependencies {
   compile 'io.jsonwebtoken:jjwt-api:0.11.2'
   runtime 'io.jsonwebtoken:jjwt-impl:0.11.2'
   runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-  compileOnly 'org.projectlombok:lombok'
-  annotationProcessor 'org.projectlombok:lombok'
-  testCompileOnly 'org.projectlombok:lombok'
-  testAnnotationProcessor 'org.projectlombok:lombok'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'com.h2database:h2'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
   testImplementation('org.springframework.boot:spring-boot-starter-test') {
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
+  //Lombok
+  compileOnly 'org.projectlombok:lombok:1.18.20'
+  annotationProcessor 'org.projectlombok:lombok:1.18.20'
+  testCompileOnly 'org.projectlombok:lombok:1.18.20'
+  testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+
   testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
   testCompile group: 'org.mockito', name: 'mockito-core', version: '2.19.0'
   testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '2.19.0'
