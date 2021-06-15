@@ -1,5 +1,7 @@
 package com.felzan.coffeeshop.application.services;
 
+import static lombok.AccessLevel.PRIVATE;
+
 import com.felzan.coffeeshop.application.config.JWTTokenProvider;
 import com.felzan.coffeeshop.application.dto.UserDTO;
 import com.felzan.coffeeshop.application.exceptions.PasswordNotMatchException;
@@ -13,39 +15,37 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static lombok.AccessLevel.PRIVATE;
-
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = PRIVATE)
 public class UserService implements UserIn {
 
-    SaveUser saveUser;
-    FindUser findUser;
-    PasswordEncoder passwordEncoder;
-    JWTTokenProvider jwtTokenProvider;
+  SaveUser saveUser;
+  FindUser findUser;
+  PasswordEncoder passwordEncoder;
+  JWTTokenProvider jwtTokenProvider;
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public String create(UserDTO userDTO) {
-        // TODO: Can encode during serialization?
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        saveUser.save(userDTO.toUser());
-        return jwtTokenProvider.generateToken(userDTO);
-    }
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public String create(UserDTO userDTO) {
+    // TODO: Can encode during serialization?
+    userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+    saveUser.save(userDTO.toUser());
+    return jwtTokenProvider.generateToken(userDTO);
+  }
 
-    @Override
-    public String login(UserDTO userDTO) {
-        User userFound = findUser.findByUsername(userDTO.getUsername());
-        if (!passwordEncoder.matches(userDTO.getPassword(), userFound.getPassword())) {
-            throw new PasswordNotMatchException();
-        }
-        return jwtTokenProvider.generateToken(userDTO);
+  @Override
+  public String login(UserDTO userDTO) {
+    User userFound = findUser.findByUsername(userDTO.getUsername());
+    if (!passwordEncoder.matches(userDTO.getPassword(), userFound.getPassword())) {
+      throw new PasswordNotMatchException();
     }
+    return jwtTokenProvider.generateToken(userDTO);
+  }
 
-    public boolean exists(UserDTO userDTO) {
-        User user = findUser.findByUsername(userDTO.getUsername());
-        return user != null;
-    }
+  public boolean exists(UserDTO userDTO) {
+    User user = findUser.findByUsername(userDTO.getUsername());
+    return user != null;
+  }
 
 }

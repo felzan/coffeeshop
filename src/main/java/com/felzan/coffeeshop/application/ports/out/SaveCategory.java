@@ -4,5 +4,5 @@ import com.felzan.coffeeshop.application.models.Category;
 
 public interface SaveCategory {
 
-    void save(Category category);
+  void save(Category category);
 }

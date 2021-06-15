@@ -12,18 +12,18 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRequest {
 
-    String username;
-    String password;
-    String name;
-    String email;
+  String username;
+  String password;
+  String name;
+  String email;
 
-    public UserDTO toUserDTO() {
-        return UserDTO.builder()
-                .username(getUsername())
-                .password(getPassword())
-                .name(getName())
-                .email(getEmail())
-                .build();
-    }
+  public UserDTO toUserDTO() {
+    return UserDTO.builder()
+        .username(getUsername())
+        .password(getPassword())
+        .name(getName())
+        .email(getEmail())
+        .build();
+  }
 
 }

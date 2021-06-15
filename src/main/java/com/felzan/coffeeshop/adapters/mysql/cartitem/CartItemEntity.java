@@ -1,19 +1,22 @@
 package com.felzan.coffeeshop.adapters.mysql.cartitem;
 
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PRIVATE;
+
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
 import com.felzan.coffeeshop.adapters.mysql.cart.CartEntity;
 import com.felzan.coffeeshop.application.models.CartItem;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -26,39 +29,43 @@ import static lombok.AccessLevel.PRIVATE;
 @EqualsAndHashCode(callSuper = false)
 public class CartItemEntity extends BaseEntity {
 
-    Integer quantity;
-    @ManyToOne(fetch = LAZY, cascade = {PERSIST})
-    @JoinColumn(name = "cart_id", updatable = false)
-    CartEntity cart;
+  Long productId;
+  Integer quantity;
+  @ManyToOne(fetch = LAZY)
+  @JoinColumn(name = "cart_id", updatable = false)
+  CartEntity cart;
 
-    String name;
-    String description;
-    boolean available;
-    String image;
-    Integer price;
-    String sku;
+  String name;
+  String description;
+  boolean available;
+  String image;
+  Integer price;
+  String sku;
 
-    public CartItemEntity(CartItem cartItem) {
-        setId(cartItem.getId());
-        setName(cartItem.getName());
-        setDescription(cartItem.getDescription());
-        setAvailable(cartItem.isAvailable());
-        setImage(cartItem.getImage());
-        setPrice(cartItem.getPrice());
-        setSku(cartItem.getSku());
+  public CartItemEntity(CartItem cartItem) {
+    setName(cartItem.getName());
+    setDescription(cartItem.getDescription());
+    setAvailable(cartItem.isAvailable());
+    setImage(cartItem.getImage());
+    setPrice(cartItem.getPrice());
+    setSku(cartItem.getSku());
 
-        setQuantity(cartItem.getQuantity());
-    }
+    setProductId(cartItem.getProductId());
+    setQuantity(cartItem.getQuantity());
+  }
 
-    public CartItem toCartItem() {
-        return CartItem.builder()
-                .id(getId())
-                .name(getName())
-                .description(getDescription())
-                .available(isAvailable())
-                .image(getImage())
-                .price(getPrice())
-                .sku(getSku())
-                .build();
-    }
+  public CartItem toCartItem() {
+    return CartItem.builder()
+        .id(getId())
+        .name(getName())
+        .description(getDescription())
+        .available(isAvailable())
+        .image(getImage())
+        .price(getPrice())
+        .sku(getSku())
+
+        .productId(getProductId())
+        .quantity(getQuantity())
+        .build();
+  }
 }

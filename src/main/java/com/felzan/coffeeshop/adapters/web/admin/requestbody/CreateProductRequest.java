@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateProductRequest {
 
-    String name;
-    String description;
-    boolean available;
-    String image;
-    Integer price;
-    String sku;
+  String name;
+  String description;
+  boolean available;
+  String image;
+  Integer price;
+  String sku;
 
-    public ProductDTO toDTO() {
-        return ProductDTO.builder()
-                .name(getName())
-                .description(getDescription())
-                .available(isAvailable())
-                .image(getImage())
-                .price(getPrice())
-                .sku(getSku())
-                .build();
-    }
+  public ProductDTO toDTO() {
+    return ProductDTO.builder()
+        .name(getName())
+        .description(getDescription())
+        .available(isAvailable())
+        .image(getImage())
+        .price(getPrice())
+        .sku(getSku())
+        .build();
+  }
 }

@@ -4,5 +4,5 @@ import com.felzan.coffeeshop.application.dto.ProductDTO;
 
 public interface UpdateProductIn {
 
-    void update(Long productId, ProductDTO productDTO);
+  void update(Long productId, ProductDTO productDTO);
 }
