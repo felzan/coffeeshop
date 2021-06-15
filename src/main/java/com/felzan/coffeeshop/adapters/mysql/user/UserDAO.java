@@ -11,19 +11,19 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserDAO implements SaveUser, FindUser {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    @Override
-    public void save(User user) {
-        UserEntity userEntity = new UserEntity(user);
-        userRepository.save(userEntity);
-    }
+  @Override
+  public void save(User user) {
+    UserEntity userEntity = new UserEntity(user);
+    userRepository.save(userEntity);
+  }
 
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new)
-                .toUser();
-    }
+  @Override
+  public User findByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(UserNotFoundException::new)
+        .toUser();
+  }
 
 }

@@ -1,20 +1,5 @@
 package com.felzan.coffeeshop.application.services;
 
-import com.felzan.coffeeshop.application.dto.ProductDTO;
-import com.felzan.coffeeshop.application.models.Product;
-import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
-import com.felzan.coffeeshop.application.ports.out.FindProduct;
-import com.felzan.coffeeshop.application.ports.out.SaveProduct;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
 import static com.felzan.coffeeshop.application.services.fixture.ProductFixture.productFixture;
 import static com.felzan.coffeeshop.application.services.fixture.ProductFixture.productListFixture;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,89 +7,104 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.felzan.coffeeshop.application.dto.ProductDTO;
+import com.felzan.coffeeshop.application.models.Product;
+import com.felzan.coffeeshop.application.ports.out.DeleteProduct;
+import com.felzan.coffeeshop.application.ports.out.FindProduct;
+import com.felzan.coffeeshop.application.ports.out.SaveProduct;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
-    @InjectMocks
-    private ProductService productService;
-    @Mock
-    private SaveProduct saveProduct;
-    @Mock
-    private DeleteProduct deleteProduct;
-    @Mock
-    private FindProduct findProduct;
 
-    @Test
-    @DisplayName("Should call save")
-    void create() {
-        ProductDTO productDTO = ProductDTO.builder()
-                .name("Product")
-                .build();
+  @InjectMocks
+  private ProductService productService;
+  @Mock
+  private SaveProduct saveProduct;
+  @Mock
+  private DeleteProduct deleteProduct;
+  @Mock
+  private FindProduct findProduct;
 
-        productService.create(productDTO);
+  @Test
+  @DisplayName("Should call save")
+  void create() {
+    ProductDTO productDTO = ProductDTO.builder()
+        .name("Product")
+        .build();
 
-        verify(saveProduct).save(any(Product.class));
-    }
+    productService.create(productDTO);
 
-    @Test
-    @DisplayName("Should call save")
-    void update() {
-        Long productId = 1L;
-        ProductDTO productDTO = ProductDTO.builder()
-                .name("Product")
-                .build();
+    verify(saveProduct).save(any(Product.class));
+  }
 
-        productService.update(productId, productDTO);
+  @Test
+  @DisplayName("Should call save")
+  void update() {
+    Long productId = 1L;
+    ProductDTO productDTO = ProductDTO.builder()
+        .name("Product")
+        .build();
 
-        verify(saveProduct).save(any(Product.class));
-    }
+    productService.update(productId, productDTO);
 
-    @Test
-    @DisplayName("Should call delete")
-    void delete() {
-        Long productId = 1L;
+    verify(saveProduct).save(any(Product.class));
+  }
 
-        productService.delete(productId);
+  @Test
+  @DisplayName("Should call delete")
+  void delete() {
+    Long productId = 1L;
 
-        verify(deleteProduct).delete(productId);
-    }
+    productService.delete(productId);
 
-    @Test
-    @DisplayName("Should call findAll")
-    void find() {
-        when(findProduct.findAll())
-                .thenReturn(productListFixture());
+    verify(deleteProduct).delete(productId);
+  }
 
-        productService.find();
-    }
+  @Test
+  @DisplayName("Should call findAll")
+  void find() {
+    when(findProduct.findAll())
+        .thenReturn(productListFixture());
 
-    @Test
-    @DisplayName("Should call findById")
-    void findById() {
-        Long productId = 1L;
-        when(findProduct.findById(productId))
-                .thenReturn(Optional.of(productFixture()));
+    productService.find();
+  }
 
-        productService.findById(productId);
-    }
+  @Test
+  @DisplayName("Should call findById")
+  void findById() {
+    Long productId = 1L;
+    when(findProduct.findById(productId))
+        .thenReturn(Optional.of(productFixture()));
 
-    @Test
-    @DisplayName("Should throw RuntimeException when findById return nothing")
-    void findByIdThrowingException() {
-        Long productId = 1L;
+    productService.findById(productId);
+  }
 
-        when(findProduct.findById(productId))
-                .thenReturn(Optional.empty());
+  @Test
+  @DisplayName("Should throw RuntimeException when findById return nothing")
+  void findByIdThrowingException() {
+    Long productId = 1L;
 
-        assertThrows(RuntimeException.class, () -> productService.findById(productId));
-    }
+    when(findProduct.findById(productId))
+        .thenReturn(Optional.empty());
 
-    @Test
-    @DisplayName("Should return products")
-    void findAllByIds() {
-        List<Long> ids = List.of(1L);
-        when(findProduct.FindByIds(ids))
-                .thenReturn(productListFixture());
+    assertThrows(RuntimeException.class, () -> productService.findById(productId));
+  }
 
-        productService.findAllByIds(ids);
-    }
+  @Test
+  @DisplayName("Should return products")
+  void findAllByIds() {
+    List<Long> ids = List.of(1L);
+    when(findProduct.FindByIds(ids))
+        .thenReturn(productListFixture());
+
+    productService.findAllByIds(ids);
+  }
 }

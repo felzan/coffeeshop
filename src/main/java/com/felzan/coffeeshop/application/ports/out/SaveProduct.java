@@ -4,5 +4,5 @@ import com.felzan.coffeeshop.application.models.Product;
 
 public interface SaveProduct {
 
-    void save(Product product);
+  Product save(Product product);
 }

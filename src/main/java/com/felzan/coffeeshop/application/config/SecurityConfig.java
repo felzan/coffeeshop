@@ -1,5 +1,8 @@
 package com.felzan.coffeeshop.application.config;
 
+import static com.felzan.coffeeshop.adapters.web.ConstantsController.USER;
+import static lombok.AccessLevel.PRIVATE;
+
 import com.felzan.coffeeshop.adapters.web.filter.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,9 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.felzan.coffeeshop.adapters.web.ConstantsController.USER;
-import static lombok.AccessLevel.PRIVATE;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -26,33 +26,33 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    JwtTokenFilter jwtTokenFilter;
+  JwtTokenFilter jwtTokenFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors().and().csrf().disable()
-                .headers().frameOptions().disable()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/**/" + USER + "/**").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/**/" + USER + "/**").permitAll()
-                .antMatchers("/h2-console/**/**").permitAll()
-                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().logout().permitAll()
-                .and()
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+        .cors().and().csrf().disable()
+        .headers().frameOptions().disable()
+        .and()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.POST, "/**/" + USER + "/**").permitAll()
+        .antMatchers(HttpMethod.PATCH, "/**/" + USER + "/**").permitAll()
+        .antMatchers("/h2-console/**/**").permitAll()
+        .anyRequest().authenticated()
+        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().logout().permitAll()
+        .and()
+        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+  }
 }
