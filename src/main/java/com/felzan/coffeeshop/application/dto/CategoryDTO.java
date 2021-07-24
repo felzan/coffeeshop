@@ -12,8 +12,8 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = PRIVATE)
+@EqualsAndHashCode(callSuper = false)
 public class CategoryDTO extends BaseDTO {
 
   String name;

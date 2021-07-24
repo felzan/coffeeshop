@@ -5,7 +5,6 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.felzan.coffeeshop.adapters.web.cart.requestbody.CartRequest;
-import com.felzan.coffeeshop.application.dto.CartDTO;
 import com.felzan.coffeeshop.application.models.Cart;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +34,14 @@ public class CartController {
 
   @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
   public ResponseEntity<Long> create(@RequestBody CartRequest cartRequest) {
-    Cart cart = cartIn.save(cartRequest.toDTO());
+    var cart = cartIn.save(cartRequest.toDTO());
     return ResponseEntity.status(HttpStatus.CREATED).body(cart.getId());
   }
 
   @PutMapping(value = "{cartId}", consumes = APPLICATION_JSON_VALUE)
   public ResponseEntity<?> replace(@PathVariable Long cartId,
       @RequestBody CartRequest cartRequest) {
-    CartDTO cartDTO = cartRequest.toDTO();
+    var cartDTO = cartRequest.toDTO();
     cartDTO.setId(cartId);
     cartIn.replace(cartDTO);
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();

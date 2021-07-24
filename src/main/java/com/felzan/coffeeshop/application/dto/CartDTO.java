@@ -12,14 +12,15 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = PRIVATE)
+@EqualsAndHashCode(callSuper = false)
 public class CartDTO extends BaseDTO {
 
   String sessionId;
   Long userId;
   Map<Long, Integer> cartItems;
   String status;
+  PaymentInfoDTO paymentInfo;
 
   public Cart toCart() {
     return Cart.builder()
@@ -27,6 +28,7 @@ public class CartDTO extends BaseDTO {
         .sessionId(getSessionId())
         .userId(getUserId())
         .status(getStatus())
+        .paymentInfo(paymentInfo.toModel())
         .build();
   }
 }

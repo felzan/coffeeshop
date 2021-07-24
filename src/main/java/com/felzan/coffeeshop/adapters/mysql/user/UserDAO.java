@@ -26,4 +26,12 @@ public class UserDAO implements SaveUser, FindUser {
         .toUser();
   }
 
+  @Override
+  public User findById(Long userId) {
+    return userRepository.findById(userId)
+        .orElseThrow(UserNotFoundException::new)
+        .toUser();
+  }
+
+
 }

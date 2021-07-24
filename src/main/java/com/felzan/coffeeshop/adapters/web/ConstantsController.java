@@ -2,7 +2,7 @@ package com.felzan.coffeeshop.adapters.web;
 
 public interface ConstantsController {
 
-  String BASE = "api/v1";
+  String BASE = "/api/v1";
   String ADMIN = "admin";
   String CATEGORY = "categories";
   String PRODUCT = "products";
@@ -14,6 +14,10 @@ public interface ConstantsController {
   String USER = BASE + "/users";
 
   String CART = BASE + "/carts";
+
+  String MERCHANT = BASE + "/merchants";
+
+  String WHITE_LABEL = BASE + "/whitelabels";
 
 }
 

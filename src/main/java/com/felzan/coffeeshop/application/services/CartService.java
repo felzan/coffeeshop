@@ -7,11 +7,14 @@ import com.felzan.coffeeshop.application.exceptions.NotFoundException;
 import com.felzan.coffeeshop.application.models.Cart;
 import com.felzan.coffeeshop.application.models.CartItem;
 import com.felzan.coffeeshop.application.models.Product;
+import com.felzan.coffeeshop.application.models.User;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
 import com.felzan.coffeeshop.application.ports.out.ClearCart;
 import com.felzan.coffeeshop.application.ports.out.FindCart;
 import com.felzan.coffeeshop.application.ports.out.FindProduct;
+import com.felzan.coffeeshop.application.ports.out.FindUser;
 import com.felzan.coffeeshop.application.ports.out.SaveCart;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,20 +30,12 @@ public class CartService implements CartIn {
   SaveCart saveCart;
   ClearCart clearCart;
   FindCart findCart;
+  FindUser findUser;
   FindProduct findProduct;
   PaymentService payment;
 
   @Override
   public Cart save(CartDTO dto) {
-    if (isCheckout(dto)) {
-      String currentStatus;
-      if (payment.execute()) {
-        currentStatus = "PAID";
-      } else {
-        currentStatus = "PAYMENT_FAILED";
-      }
-      dto.setStatus(currentStatus);
-    }
     List<Long> productsIdsList = new ArrayList<>(dto.getCartItems().keySet());
     List<Product> products = findProduct.FindByIds(productsIdsList);
     if (products.size() < productsIdsList.size()) {
@@ -65,6 +60,23 @@ public class CartService implements CartIn {
 
     Cart cart = dto.toCart();
     cart.setItemList(cartItems);
+
+    if (isCheckout(dto)) {
+      String currentStatus;
+      int total = cart.getItemList().stream().mapToInt(Product::getPrice).reduce(0,
+          Integer::sum);
+
+      User user = findUser.findById(dto.getUserId());
+      var paymentInfo = dto.getPaymentInfo();
+      paymentInfo.setUserReference(user.getUsername());
+      paymentInfo.setValue(new BigDecimal(total));
+      if (payment.execute(paymentInfo.toModel())) {
+        currentStatus = "PAID";
+      } else {
+        currentStatus = "PAYMENT_FAILED";
+      }
+      cart.setStatus(currentStatus);
+    }
     return saveCart.save(cart);
   }
 
@@ -76,9 +88,6 @@ public class CartService implements CartIn {
 
   private boolean isCheckout(CartDTO dto) {
 //        TODO: get last status and check
-//        if (dto.getStatus() != null && dto.getStatus().equals("PAID")) {
-//            throw new CannotUpdateCartException();
-//        }
     return dto.getStatus() != null
         && dto.getStatus().equals("CHECKOUT")
         && !dto.getStatus().equals("PAID");

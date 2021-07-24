@@ -1,0 +1,46 @@
+server:
+  port: ${PORT:8080}
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:test
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+  application:
+    name: Coffeeshop
+  profiles:
+    active: local
+
+jwt:
+  secret: Very!!Secret<->Password!=
+  expirationInMs: 28800000
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+      adyen:
+        defaultRequestHeaders:
+          x-API-key: AQEhhmfuXNWTK0Qc+iSWl2gipup5BZ1/F5aYOnU9ohtllMDpEMFdWw2+5HzctViMSCJMYAc=-xzEwrpjLnQ19nltOtbVOYvjW1j/zSM+VBFFKP43d7CU=-L2EhF2^>89San<4f
+logging:
+  level:
+    com:
+      felzan:
+        coffeeshop:
+          adapters:
+            partners:
+              adyen:
+                AdyenClient: DEBUG
+          application:
+            services:
+              PaymentService: DEBUG
