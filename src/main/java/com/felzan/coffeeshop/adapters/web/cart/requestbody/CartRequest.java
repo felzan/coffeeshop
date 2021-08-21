@@ -1,7 +1,6 @@
 package com.felzan.coffeeshop.adapters.web.cart.requestbody;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.felzan.coffeeshop.application.dto.CartDTO;
 import com.felzan.coffeeshop.application.dto.PaymentInfoDTO;
 import java.util.Map;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class CartRequest {
 
   String sessionId;

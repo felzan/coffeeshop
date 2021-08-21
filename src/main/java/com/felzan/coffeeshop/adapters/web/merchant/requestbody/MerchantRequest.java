@@ -1,6 +1,5 @@
 package com.felzan.coffeeshop.adapters.web.merchant.requestbody;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.felzan.coffeeshop.application.dto.MerchantDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class MerchantRequest {
 
   String name;

@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
+import com.felzan.coffeeshop.adapters.mysql.merchant.MerchantEntity;
 import com.felzan.coffeeshop.adapters.mysql.product.ProductEntity;
 import com.felzan.coffeeshop.application.models.Category;
 import com.felzan.coffeeshop.application.models.Product;
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +43,9 @@ public class CategoryEntity extends BaseEntity {
       joinColumns = @JoinColumn(name = "category_id"),
       inverseJoinColumns = @JoinColumn(name = "product_id"))
   private List<ProductEntity> products;
+  @ManyToOne
+  @JoinColumn(name = "merchant_id")
+  MerchantEntity merchant;
 
   public CategoryEntity(Category category) {
     List<ProductEntity> products = category.getProducts().stream()
@@ -56,9 +61,9 @@ public class CategoryEntity extends BaseEntity {
     setProducts(products);
   }
 
-  public Category toCategory() {
+  public Category toModel() {
     List<Product> products = getProducts().stream()
-        .map(ProductEntity::toProduct)
+        .map(ProductEntity::toModel)
         .collect(Collectors.toList());
 
     return Category.builder()

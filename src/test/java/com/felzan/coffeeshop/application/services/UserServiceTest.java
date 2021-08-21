@@ -1,6 +1,7 @@
 package com.felzan.coffeeshop.application.services;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -21,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-  private static String token =
+  private static final String token =
       "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZWx6YW4iLCJpYXQiOjE2MDg1NjE1NzEsImV4cCI6MTYwODU5MDM3MX0.GPZbOmee2tZlytuFDf5v3duL2vEhmPwMAanDdIU-q7A";
   @InjectMocks
   private UserService userService;
@@ -111,6 +112,6 @@ class UserServiceTest {
     when(findUser.findByUsername("user"))
         .thenReturn(user());
 
-    userService.exists(userDTO);
+    assertTrue(userService.exists(userDTO));
   }
 }

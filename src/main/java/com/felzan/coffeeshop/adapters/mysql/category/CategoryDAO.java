@@ -21,14 +21,14 @@ public class CategoryDAO implements SaveCategory, FindCategory, DeleteCategory {
   public List<Category> find(FindCategoryCriteria criteria) {
     List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
     return categoryEntityList.stream()
-        .map(CategoryEntity::toCategory)
+        .map(CategoryEntity::toModel)
         .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Category> findById(Long categoryId) {
     return categoryRepository.findById(categoryId)
-        .map(CategoryEntity::toCategory);
+        .map(CategoryEntity::toModel);
   }
 
   @Override

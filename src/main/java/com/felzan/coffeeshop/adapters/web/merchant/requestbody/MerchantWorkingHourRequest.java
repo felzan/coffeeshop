@@ -1,6 +1,5 @@
 package com.felzan.coffeeshop.adapters.web.merchant.requestbody;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.felzan.coffeeshop.application.dto.MerchantWorkingHourDTO;
 import java.time.DayOfWeek;
 import java.util.List;
@@ -15,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class MerchantWorkingHourRequest {
 
   Set<DayOfWeek> days;

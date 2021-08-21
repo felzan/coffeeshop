@@ -4,8 +4,8 @@ import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.application.dto.CartDTO;
 import com.felzan.coffeeshop.application.exceptions.NotFoundException;
-import com.felzan.coffeeshop.application.models.Cart;
-import com.felzan.coffeeshop.application.models.CartItem;
+import com.felzan.coffeeshop.application.models.Order;
+import com.felzan.coffeeshop.application.models.OrderItem;
 import com.felzan.coffeeshop.application.models.Product;
 import com.felzan.coffeeshop.application.models.User;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
@@ -35,16 +35,16 @@ public class CartService implements CartIn {
   PaymentService payment;
 
   @Override
-  public Cart save(CartDTO dto) {
+  public Order save(CartDTO dto) {
     List<Long> productsIdsList = new ArrayList<>(dto.getCartItems().keySet());
     List<Product> products = findProduct.FindByIds(productsIdsList);
     if (products.size() < productsIdsList.size()) {
       throw new NotFoundException();
     }
 
-    List<CartItem> cartItems = products.stream()
+    List<OrderItem> orderItems = products.stream()
         .map(product ->
-            CartItem.builder()
+            OrderItem.builder()
                 .productId(product.getId())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
@@ -58,12 +58,12 @@ public class CartService implements CartIn {
                 .build()
         ).collect(Collectors.toList());
 
-    Cart cart = dto.toCart();
-    cart.setItemList(cartItems);
+    Order order = dto.toCart();
+    order.setItemList(orderItems);
 
     if (isCheckout(dto)) {
       String currentStatus;
-      int total = cart.getItemList().stream().mapToInt(Product::getPrice).reduce(0,
+      int total = order.getItemList().stream().mapToInt(Product::getPrice).reduce(0,
           Integer::sum);
 
       User user = findUser.findById(dto.getUserId());
@@ -75,13 +75,13 @@ public class CartService implements CartIn {
       } else {
         currentStatus = "PAYMENT_FAILED";
       }
-      cart.setStatus(currentStatus);
+      order.setStatus(currentStatus);
     }
-    return saveCart.save(cart);
+    return saveCart.save(order);
   }
 
   @Override
-  public Cart replace(CartDTO dto) {
+  public Order replace(CartDTO dto) {
     clearCart.clear(dto.getId());
     return save(dto);
   }
@@ -94,24 +94,24 @@ public class CartService implements CartIn {
   }
 
   @Override
-  public Cart findLast() {
+  public Order findLast() {
     return findCart.findLast();
   }
 
   @Override
-  public List<Cart> findAll() {
+  public List<Order> findAll() {
     return findCart.findAll();
   }
 
   @Override
-  public Cart findOne(Long id) {
+  public Order findOne(Long id) {
     return findCart.findOne(id);
   }
 
   @Override
   public void updateStatus(Long id, String status) {
-    Cart cart = findCart.findOne(id);
-    cart.setStatus(status);
-    saveCart.save(cart);
+    Order order = findCart.findOne(id);
+    order.setStatus(status);
+    saveCart.save(order);
   }
 }

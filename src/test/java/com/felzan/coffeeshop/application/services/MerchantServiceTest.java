@@ -16,8 +16,10 @@ import com.felzan.coffeeshop.application.dto.MerchantWorkingHourShiftDTO;
 import com.felzan.coffeeshop.application.models.Merchant;
 import com.felzan.coffeeshop.application.models.MerchantWorkingHour;
 import com.felzan.coffeeshop.application.models.MerchantWorkingHourShift;
+import com.felzan.coffeeshop.application.ports.out.FindMerchant;
 import com.felzan.coffeeshop.application.ports.out.SaveMerchant;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,8 @@ class MerchantServiceTest {
   private MerchantService merchantService;
   @Mock
   private SaveMerchant saveMerchant;
+  @Mock
+  private FindMerchant findMerchant;
 
   @Test
   @DisplayName("Should save")
@@ -42,6 +46,15 @@ class MerchantServiceTest {
     when(saveMerchant.save(any()))
         .thenReturn(merchant);
     merchantService.save(input);
+  }
+
+  @Test
+  @DisplayName("FindById")
+  void findById() {
+    var merchant = Optional.of(buildMerchant());
+    when(findMerchant.findById(any()))
+        .thenReturn(merchant);
+    merchantService.findById(1L);
   }
 
   private Merchant buildMerchant() {

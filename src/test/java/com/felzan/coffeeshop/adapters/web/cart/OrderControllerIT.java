@@ -11,12 +11,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.felzan.coffeeshop.CoffeeShopApplication;
-import com.felzan.coffeeshop.adapters.mysql.cart.CartEntity;
-import com.felzan.coffeeshop.adapters.mysql.cart.CartRepository;
+import com.felzan.coffeeshop.adapters.mysql.order.OrderEntity;
+import com.felzan.coffeeshop.adapters.mysql.order.OrderRepository;
 import com.felzan.coffeeshop.adapters.web.cart.requestbody.CartRequest;
 import com.felzan.coffeeshop.application.dto.ProductDTO;
 import com.felzan.coffeeshop.application.dto.UserDTO;
-import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.models.Order;
 import com.felzan.coffeeshop.application.models.Product;
 import com.felzan.coffeeshop.application.services.CartService;
 import com.felzan.coffeeshop.application.services.ProductService;
@@ -44,14 +44,14 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureMockMvc
 @EnableAutoConfiguration
 @AutoConfigureTestDatabase
-class CartControllerIT {
+class OrderControllerIT {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   @Autowired
   private MockMvc mvc;
   @Autowired
-  private CartRepository cartRepository;
+  private OrderRepository orderRepository;
   @Autowired
   private CartService cartService;
   @Autowired
@@ -72,9 +72,9 @@ class CartControllerIT {
     productService.find().stream()
         .mapToLong(Product::getId)
         .forEach(id -> productService.delete(id));
-    cartRepository.findAll().stream()
-        .mapToLong(CartEntity::getId)
-        .forEach(id -> cartRepository.deleteById(id));
+    orderRepository.findAll().stream()
+        .mapToLong(OrderEntity::getId)
+        .forEach(id -> orderRepository.deleteById(id));
   }
 
   @Test
@@ -96,9 +96,9 @@ class CartControllerIT {
     Long cartId = OBJECT_MAPPER
         .readValue(resultActions.andReturn().getResponse().getContentAsString(), Long.class);
 
-    Cart cart = cartService.findOne(cartId);
-    assertEquals(Integer.valueOf(6), cart.getItemList().get(0).getQuantity());
-    assertEquals("Coca Cola", cart.getItemList().get(0).getName());
+    Order order = cartService.findOne(cartId);
+    assertEquals(Integer.valueOf(6), order.getItemList().get(0).getQuantity());
+    assertEquals("Coca Cola", order.getItemList().get(0).getName());
   }
 
   @Test
@@ -121,8 +121,8 @@ class CartControllerIT {
     Long cartId = OBJECT_MAPPER
         .readValue(resultActions.andReturn().getResponse().getContentAsString(), Long.class);
 
-    Cart cart = cartService.findOne(cartId);
-    assertNotNull(cart.getStatus());
+    Order order = cartService.findOne(cartId);
+    assertNotNull(order.getStatus());
   }
 
   // TODO: Test replace others users cart
@@ -140,19 +140,19 @@ class CartControllerIT {
     cartRequest.setUserId(null);
     cartRequest.setCartItems(Map.of(cocaCola.getId(), 6));
 
-    Cart cart = cartService.save(cartRequest.toDTO());
+    Order order = cartService.save(cartRequest.toDTO());
 
     cartRequest.setCartItems(Map.of(cocaCola.getId(), 12));
 
-    mvc.perform(put("/api/v1/carts/" + cart.getId().toString())
+    mvc.perform(put("/api/v1/carts/" + order.getId().toString())
         .header("Authorization", token)
         .contentType(APPLICATION_JSON)
         .content(toJson(cartRequest)));
 
-    Optional<CartEntity> cartEntity = cartRepository.findById(cart.getId());
+    Optional<OrderEntity> cartEntity = orderRepository.findById(order.getId());
     assertTrue(cartEntity.isPresent());
-    assertEquals(1, cartEntity.get().getCartItems().size());
-    assertEquals(Integer.valueOf(12), cartEntity.get().getCartItems().get(0).getQuantity());
-    assertEquals("Coca Cola", cartEntity.get().getCartItems().get(0).getName());
+    assertEquals(1, cartEntity.get().getOrderItems().size());
+    assertEquals(Integer.valueOf(12), cartEntity.get().getOrderItems().get(0).getQuantity());
+    assertEquals("Coca Cola", cartEntity.get().getOrderItems().get(0).getName());
   }
 }

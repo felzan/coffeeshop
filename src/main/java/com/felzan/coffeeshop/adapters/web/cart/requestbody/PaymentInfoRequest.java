@@ -3,7 +3,6 @@ package com.felzan.coffeeshop.adapters.web.cart.requestbody;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.felzan.coffeeshop.application.dto.PaymentInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentInfoRequest {
 
   String cardToken;

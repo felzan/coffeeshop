@@ -4,7 +4,7 @@ import static com.felzan.coffeeshop.adapters.web.ConstantsController.ADMIN_CART;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.models.Order;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +26,12 @@ public class AdminCartController {
   CartIn cartIn;
 
   @GetMapping(value = "")
-  public ResponseEntity<List<Cart>> findAll() {
+  public ResponseEntity<List<Order>> findAll() {
     return ResponseEntity.ok(cartIn.findAll());
   }
 
   @GetMapping(value = "{cartId}")
-  public ResponseEntity<Cart> findOne(@PathVariable Long cartId) {
+  public ResponseEntity<Order> findOne(@PathVariable Long cartId) {
     return ResponseEntity.ok(cartIn.findOne(cartId));
   }
 

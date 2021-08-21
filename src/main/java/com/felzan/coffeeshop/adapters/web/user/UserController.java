@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.felzan.coffeeshop.adapters.web.user.requestbody.UserRequest;
 import com.felzan.coffeeshop.application.ports.in.user.UserIn;
+import com.felzan.coffeeshop.infrastructure.mapper.BeanMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
@@ -23,17 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   UserIn userIn;
+  BeanMapper beanMapper;
 
   @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
   public ResponseEntity<String> post(@RequestBody UserRequest userRequest) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(userIn.create(userRequest.toUserDTO()));
+        .body(userIn.create(beanMapper.userRequestToDTO(userRequest)));
   }
 
   @PatchMapping(value = "", consumes = APPLICATION_JSON_VALUE)
   public ResponseEntity<String> login(@RequestBody UserRequest userRequest) {
     return ResponseEntity.status(HttpStatus.ACCEPTED)
-        .body(userIn.login(userRequest.toUserDTO()));
+        .body(userIn.login(beanMapper.userRequestToDTO(userRequest)));
   }
 
 }

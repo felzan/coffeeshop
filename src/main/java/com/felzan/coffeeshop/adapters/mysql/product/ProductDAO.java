@@ -24,27 +24,27 @@ public class ProductDAO implements FindProduct, DeleteProduct, SaveProduct {
   public List<Product> findAll() {
     List<ProductEntity> productEntityList = productRepository.findAll();
     return productEntityList.stream()
-        .map(ProductEntity::toProduct)
+        .map(ProductEntity::toModel)
         .collect(Collectors.toList());
   }
 
   @Override
   public Optional<Product> findById(Long productId) {
-    return productRepository.findById(productId).map(ProductEntity::toProduct);
+    return productRepository.findById(productId).map(ProductEntity::toModel);
   }
 
   @Override
   public List<Product> FindByIds(List<Long> ids) {
     List<ProductEntity> productEntityList = productRepository.findAllById(ids);
     return productEntityList.stream()
-        .map(ProductEntity::toProduct)
+        .map(ProductEntity::toModel)
         .collect(Collectors.toList());
   }
 
   @Override
   public Product save(Product product) {
     ProductEntity productEntity = new ProductEntity(product);
-    return productRepository.save(productEntity).toProduct();
+    return productRepository.save(productEntity).toModel();
   }
 
   @Override

@@ -1,20 +1,20 @@
 package com.felzan.coffeeshop.application.ports.in.cart;
 
 import com.felzan.coffeeshop.application.dto.CartDTO;
-import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.models.Order;
 import java.util.List;
 
 public interface CartIn {
 
-  Cart save(CartDTO dto);
+  Order save(CartDTO dto);
 
-  Cart replace(CartDTO dto);
+  Order replace(CartDTO dto);
 
-  Cart findLast();
+  Order findLast();
 
-  List<Cart> findAll();
+  List<Order> findAll();
 
-  Cart findOne(Long id);
+  Order findOne(Long id);
 
   void updateStatus(Long id, String string);
 }

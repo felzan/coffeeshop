@@ -3,7 +3,7 @@ package com.felzan.coffeeshop.application.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.models.Order;
 import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,8 +22,8 @@ public class CartDTO extends BaseDTO {
   String status;
   PaymentInfoDTO paymentInfo;
 
-  public Cart toCart() {
-    return Cart.builder()
+  public Order toCart() {
+    return Order.builder()
         .id(getId())
         .sessionId(getSessionId())
         .userId(getUserId())

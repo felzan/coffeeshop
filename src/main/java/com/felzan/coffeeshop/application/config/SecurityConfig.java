@@ -2,9 +2,12 @@ package com.felzan.coffeeshop.application.config;
 
 import static com.felzan.coffeeshop.adapters.web.ConstantsController.MERCHANT;
 import static com.felzan.coffeeshop.adapters.web.ConstantsController.USER;
+import static com.felzan.coffeeshop.adapters.web.ConstantsController.WHITE_LABEL;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PATCH;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 import com.felzan.coffeeshop.adapters.web.filter.JwtTokenFilter;
@@ -49,7 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         .antMatchers(POST, "/**/" + USER + "/**").permitAll()
+        .antMatchers(GET, "/**/" + MERCHANT + "/**").permitAll()
         .antMatchers(POST, "/**/" + MERCHANT + "/**").permitAll()
+        .antMatchers(GET, "/**/" + WHITE_LABEL + "/**").permitAll()
+        .antMatchers(POST, "/**/" + WHITE_LABEL + "/**").permitAll()
+        .antMatchers(PUT, "/**/" + WHITE_LABEL + "/**").permitAll()
         .antMatchers(PATCH, "/**/" + USER + "/**").permitAll()
         .antMatchers("/h2-console/**/**").permitAll()
         .anyRequest().authenticated()

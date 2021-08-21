@@ -5,7 +5,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.felzan.coffeeshop.adapters.web.cart.requestbody.CartRequest;
-import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.models.Order;
 import com.felzan.coffeeshop.application.ports.in.cart.CartIn;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,7 +28,7 @@ public class CartController {
   CartIn cartIn;
 
   @GetMapping(value = "")
-  public ResponseEntity<Cart> getLastCartByUser() {
+  public ResponseEntity<Order> getLastCartByUser() {
     return ResponseEntity.ok(cartIn.findLast());
   }
 

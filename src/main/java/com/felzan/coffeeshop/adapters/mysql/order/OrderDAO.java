@@ -1,4 +1,4 @@
-package com.felzan.coffeeshop.adapters.mysql.cart;
+package com.felzan.coffeeshop.adapters.mysql.order;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -6,7 +6,7 @@ import com.felzan.coffeeshop.adapters.mysql.cartitem.CartItemRepository;
 import com.felzan.coffeeshop.adapters.mysql.user.UserEntity;
 import com.felzan.coffeeshop.adapters.mysql.user.UserRepository;
 import com.felzan.coffeeshop.application.exceptions.NotFoundException;
-import com.felzan.coffeeshop.application.models.Cart;
+import com.felzan.coffeeshop.application.models.Order;
 import com.felzan.coffeeshop.application.ports.out.ClearCart;
 import com.felzan.coffeeshop.application.ports.out.FindCart;
 import com.felzan.coffeeshop.application.ports.out.SaveCart;
@@ -21,51 +21,51 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = PRIVATE)
-public class CartDAO implements ClearCart, SaveCart, FindCart {
+public class OrderDAO implements ClearCart, SaveCart, FindCart {
 
-  CartRepository cartRepository;
+  OrderRepository orderRepository;
   CartItemRepository cartItemRepository;
   UserRepository userRepository;
 
   @Override
-  public Cart save(Cart cart) {
+  public Order save(Order order) {
     User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserEntity userEntity =
         userRepository.findByUsername(currentUser.getUsername()).orElseThrow(RuntimeException::new);
-    CartEntity entity = new CartEntity(cart);
-    entity.getCartItems().forEach(cartItemEntity -> cartItemEntity.setCart(entity));
+    OrderEntity entity = new OrderEntity(order);
+    entity.getOrderItems().forEach(cartItemEntity -> cartItemEntity.setOrder(entity));
     entity.setUser(userEntity);
 
-    Cart savedCart = cartRepository.save(entity).toCart();
+    Order savedOrder = orderRepository.save(entity).toModel();
 //        cartItemRepository.saveAll(entity.getCartItems());
-    return savedCart;
+    return savedOrder;
   }
 
   @Override
-  public Cart findLast() {
+  public Order findLast() {
     User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     UserEntity userEntity =
         userRepository.findByUsername(currentUser.getUsername()).orElseThrow(RuntimeException::new);
     // TODO: verify user has cart
-    return cartRepository.findTopByUser_Id(userEntity.getId()).toCart();
+    return orderRepository.findTopByUser_Id(userEntity.getId()).toModel();
   }
 
   @Override
-  public List<Cart> findAll() {
-    return cartRepository.findAll().stream()
-        .map(CartEntity::toCart)
+  public List<Order> findAll() {
+    return orderRepository.findAll().stream()
+        .map(OrderEntity::toModel)
         .collect(Collectors.toList());
   }
 
   @Override
-  public Cart findOne(Long id) {
-    return cartRepository.findById(id).orElseThrow(NotFoundException::new).toCart();
+  public Order findOne(Long id) {
+    return orderRepository.findById(id).orElseThrow(NotFoundException::new).toModel();
   }
 
   @Override
   public void clear(Long cartId) {
-    CartEntity cartEntity = cartRepository.findById(cartId).orElseThrow();
-    cartItemRepository.deleteAll(cartEntity.getCartItems());
-//        cartEntity.getCartItems().forEach(item -> cartItemRepository.deleteById(item.getId()));
+    OrderEntity orderEntity = orderRepository.findById(cartId).orElseThrow();
+    cartItemRepository.deleteAll(orderEntity.getOrderItems());
+//        orderEntity.getCartItems().forEach(item -> cartItemRepository.deleteById(item.getId()));
   }
 }

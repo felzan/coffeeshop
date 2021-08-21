@@ -1,12 +1,15 @@
 package com.felzan.coffeeshop.adapters.mysql.user;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
-import com.felzan.coffeeshop.adapters.mysql.cart.CartEntity;
-import com.felzan.coffeeshop.application.models.User;
+import com.felzan.coffeeshop.adapters.mysql.order.OrderEntity;
+import com.felzan.coffeeshop.adapters.mysql.whitelabel.WhiteLabelEntity;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -34,19 +37,9 @@ public class UserEntity extends BaseEntity {
   @Email
   String email;
   @OneToMany(mappedBy = "user")
-  List<CartEntity> carts;
+  List<OrderEntity> orders;
+  @ManyToOne(cascade = PERSIST)
+  @JoinColumn(name = "whitelabel_id")
+  WhiteLabelEntity whiteLabel;
 
-  public UserEntity(User user) {
-    setUsername(user.getUsername());
-    setPassword(user.getPassword());
-    setEmail(user.getEmail());
-  }
-
-  public User toUser() {
-    return User.builder()
-        .username(username)
-        .password(password)
-        .email(email)
-        .build();
-  }
 }

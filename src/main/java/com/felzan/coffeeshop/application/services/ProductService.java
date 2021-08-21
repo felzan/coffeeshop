@@ -43,7 +43,7 @@ public class ProductService
 
   @Override
   public Product findById(Long productId) {
-    return findProduct.findById(productId).orElseThrow(RuntimeException::new);
+    return findProduct.findById(productId).orElseThrow();
   }
 
   @Override

@@ -5,10 +5,13 @@ import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
 import com.felzan.coffeeshop.adapters.mysql.category.CategoryEntity;
+import com.felzan.coffeeshop.adapters.mysql.merchant.MerchantEntity;
 import com.felzan.coffeeshop.application.models.Product;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +40,9 @@ public class ProductEntity extends BaseEntity {
   String sku;
   @ManyToMany(targetEntity = CategoryEntity.class, mappedBy = "products", fetch = LAZY)
   List<CategoryEntity> categories;
+  @ManyToOne
+  @JoinColumn(name = "merchant_id")
+  MerchantEntity merchant;
 
   public ProductEntity(Product product) {
     setId(product.getId());
@@ -48,7 +54,7 @@ public class ProductEntity extends BaseEntity {
     setSku(product.getSku());
   }
 
-  public Product toProduct() {
+  public Product toModel() {
     return Product.builder()
         .id(getId())
         .name(getName())

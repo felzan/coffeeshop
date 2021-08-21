@@ -2,7 +2,7 @@ package com.felzan.coffeeshop.adapters.mysql.cartitem;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import com.felzan.coffeeshop.application.models.CartItem;
+import com.felzan.coffeeshop.application.models.OrderItem;
 import com.felzan.coffeeshop.application.ports.out.SaveCartItem;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,8 +16,8 @@ public class CartItemDAO implements SaveCartItem {
   CartItemRepository cartItemRepository;
 
   @Override
-  public void save(CartItem cartItem) {
-    CartItemEntity entity = new CartItemEntity(cartItem);
+  public void save(OrderItem orderItem) {
+    OrderItemEntity entity = new OrderItemEntity(orderItem);
 
     cartItemRepository.save(entity);
   }

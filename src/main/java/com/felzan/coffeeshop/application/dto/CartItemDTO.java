@@ -3,7 +3,7 @@ package com.felzan.coffeeshop.application.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import com.felzan.coffeeshop.application.models.CartItem;
+import com.felzan.coffeeshop.application.models.OrderItem;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
@@ -17,8 +17,8 @@ public class CartItemDTO extends ProductDTO {
 
   Integer quantity;
 
-  public CartItem toCartItem() {
-    return CartItem.builder()
+  public OrderItem toCartItem() {
+    return OrderItem.builder()
         .quantity(getQuantity())
         .name(getName())
         .description(getDescription())

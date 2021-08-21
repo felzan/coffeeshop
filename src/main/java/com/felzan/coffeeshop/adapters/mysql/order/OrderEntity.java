@@ -1,4 +1,4 @@
-package com.felzan.coffeeshop.adapters.mysql.cart;
+package com.felzan.coffeeshop.adapters.mysql.order;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -6,13 +6,15 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
-import com.felzan.coffeeshop.adapters.mysql.cartitem.CartItemEntity;
+import com.felzan.coffeeshop.adapters.mysql.cartitem.OrderItemEntity;
+import com.felzan.coffeeshop.adapters.mysql.merchant.MerchantEntity;
 import com.felzan.coffeeshop.adapters.mysql.user.UserEntity;
-import com.felzan.coffeeshop.application.models.Cart;
-import com.felzan.coffeeshop.application.models.CartItem;
+import com.felzan.coffeeshop.application.models.Order;
+import com.felzan.coffeeshop.application.models.OrderItem;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -29,37 +31,41 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cart")
-@Entity(name = "cart")
+@Table(name = "`order`")
+@Entity(name = "`order`")
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
-public class CartEntity extends BaseEntity {
+public class OrderEntity extends BaseEntity {
 
   String sessionId;
   String status;
-  @ManyToOne(fetch = LAZY)
+  @ManyToOne(fetch = LAZY, cascade = ALL)
   UserEntity user;
-  @OneToMany(targetEntity = CartItemEntity.class, mappedBy = "cart", fetch = EAGER, cascade = ALL, orphanRemoval = true)
-  List<CartItemEntity> cartItems;
+  @OneToMany(targetEntity = OrderItemEntity.class, mappedBy = "order", fetch = EAGER, cascade = ALL,
+      orphanRemoval = true)
+  List<OrderItemEntity> orderItems;
+  @ManyToOne(cascade = ALL)
+  @JoinColumn(name = "merchant_id")
+  MerchantEntity merchant;
 
-  public CartEntity(Cart cart) {
-    List<CartItemEntity> items = cart.getItemList().stream()
-        .map(CartItemEntity::new)
+  public OrderEntity(Order order) {
+    List<OrderItemEntity> items = order.getItemList().stream()
+        .map(OrderItemEntity::new)
         .collect(Collectors.toList());
 
-    setId(cart.getId());
+    setId(order.getId());
 
-    setCartItems(items);
-    setSessionId(cart.getSessionId());
-    setStatus(cart.getStatus());
+    setOrderItems(items);
+    setSessionId(order.getSessionId());
+    setStatus(order.getStatus());
   }
 
-  public Cart toCart() {
-    List<CartItem> items = getCartItems().stream()
-        .map(CartItemEntity::toCartItem)
+  public Order toModel() {
+    List<OrderItem> items = getOrderItems().stream()
+        .map(OrderItemEntity::toModel)
         .collect(Collectors.toList());
 
-    return Cart.builder()
+    return Order.builder()
         .id(getId())
         .createdAt(getCreatedAt())
         .updatedAt(getUpdatedAt())

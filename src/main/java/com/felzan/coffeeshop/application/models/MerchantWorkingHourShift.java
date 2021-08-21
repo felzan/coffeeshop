@@ -3,7 +3,6 @@ package com.felzan.coffeeshop.application.models;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MerchantWorkingHourShift extends BaseModel {
 
   LocalTime begin;

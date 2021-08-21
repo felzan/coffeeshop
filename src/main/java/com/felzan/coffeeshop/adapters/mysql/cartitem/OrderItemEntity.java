@@ -4,8 +4,8 @@ import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
-import com.felzan.coffeeshop.adapters.mysql.cart.CartEntity;
-import com.felzan.coffeeshop.application.models.CartItem;
+import com.felzan.coffeeshop.adapters.mysql.order.OrderEntity;
+import com.felzan.coffeeshop.application.models.OrderItem;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,17 +23,17 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cartItem")
-@Entity(name = "cartItem")
+@Table(name = "orderItem")
+@Entity(name = "orderItem")
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
-public class CartItemEntity extends BaseEntity {
+public class OrderItemEntity extends BaseEntity {
 
   Long productId;
   Integer quantity;
   @ManyToOne(fetch = LAZY)
-  @JoinColumn(name = "cart_id", updatable = false)
-  CartEntity cart;
+  @JoinColumn(name = "order_id", updatable = false)
+  OrderEntity order;
 
   String name;
   String description;
@@ -42,21 +42,24 @@ public class CartItemEntity extends BaseEntity {
   Integer price;
   String sku;
 
-  public CartItemEntity(CartItem cartItem) {
-    setName(cartItem.getName());
-    setDescription(cartItem.getDescription());
-    setAvailable(cartItem.isAvailable());
-    setImage(cartItem.getImage());
-    setPrice(cartItem.getPrice());
-    setSku(cartItem.getSku());
+  public OrderItemEntity(OrderItem orderItem) {
+    setName(orderItem.getName());
+    setDescription(orderItem.getDescription());
+    setAvailable(orderItem.isAvailable());
+    setImage(orderItem.getImage());
+    setPrice(orderItem.getPrice());
+    setSku(orderItem.getSku());
 
-    setProductId(cartItem.getProductId());
-    setQuantity(cartItem.getQuantity());
+    setProductId(orderItem.getProductId());
+    setQuantity(orderItem.getQuantity());
   }
 
-  public CartItem toCartItem() {
-    return CartItem.builder()
+  public OrderItem toModel() {
+    return OrderItem.builder()
         .id(getId())
+        .createdAt(getCreatedAt())
+        .updatedAt(getUpdatedAt())
+
         .name(getName())
         .description(getDescription())
         .available(isAvailable())

@@ -2,20 +2,25 @@ package com.felzan.coffeeshop.application.models;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-// TODO: maybe callSuper = true?
 @EqualsAndHashCode(callSuper = false)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class CartItem extends Product {
+public class Order extends BaseModel {
 
-  Long productId;
-  Integer quantity;
+  String sessionId;
+  Long userId;
+  List<OrderItem> itemList;
+  String status;
+  PaymentInfo paymentInfo;
 }

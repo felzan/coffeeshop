@@ -1,4 +1,4 @@
-package com.felzan.coffeeshop.adapters.web.cart;
+package com.felzan.coffeeshop.adapters.web.merchant;
 
 import static java.time.DayOfWeek.FRIDAY;
 import static java.time.DayOfWeek.MONDAY;
@@ -9,13 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.felzan.coffeeshop.CoffeeShopApplication;
 import com.felzan.coffeeshop.adapters.web.ConstantsController;
+import com.felzan.coffeeshop.application.dto.MerchantDTO;
 import com.felzan.coffeeshop.application.models.Merchant;
+import com.felzan.coffeeshop.application.services.MerchantService;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Set;
@@ -41,10 +43,12 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureTestDatabase
 class MerchantControllerIT {
 
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
   @Autowired
   private MockMvc mvc;
+  @Autowired
+  private ObjectMapper objectMapper;
+  @Autowired
+  private MerchantService merchantService;
 
   @AfterEach
   void clearDb() {
@@ -53,7 +57,6 @@ class MerchantControllerIT {
   @Test
   @DisplayName(value = "Create a merchant with single working hour and single shift.")
   void create() throws Exception {
-    OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
     var json = "{\n"
         + "    \"name\": \"Merchant name\",\n"
@@ -82,7 +85,7 @@ class MerchantControllerIT {
         .contentType(APPLICATION_JSON)
         .content(json));
 
-    var merchant = OBJECT_MAPPER
+    var merchant = objectMapper
         .readValue(resultActions.andReturn().getResponse().getContentAsString(),
             Merchant.class);
 
@@ -99,6 +102,22 @@ class MerchantControllerIT {
         merchant.getWorkingHours().get(0).getShifts().get(0).getBegin());
     assertEquals(LocalTime.parse("23:00:00"),
         merchant.getWorkingHours().get(0).getShifts().get(0).getEnd());
+  }
 
+  @Test
+  @DisplayName("")
+  void findById() throws Exception {
+    var newMerchant = MerchantDTO.builder()
+        .name("Merchant 1")
+        //TODO: add more fields
+        .build();
+    merchantService.save(newMerchant);
+
+    ResultActions resultActions = mvc.perform(get(ConstantsController.MERCHANT.concat("/1")));
+    var merchant = objectMapper
+        .readValue(resultActions.andReturn().getResponse().getContentAsString(),
+            Merchant.class);
+    assertEquals(Long.valueOf(1), merchant.getId());
+    assertEquals("Merchant 1", merchant.getName());
   }
 }
