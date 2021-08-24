@@ -15,13 +15,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.felzan.coffeeshop.CoffeeShopApplication;
 import com.felzan.coffeeshop.adapters.web.ConstantsController;
-import com.felzan.coffeeshop.application.dto.MerchantDTO;
+import com.felzan.coffeeshop.adapters.web.merchant.requestbody.MerchantRequest;
+import com.felzan.coffeeshop.adapters.web.whitelabel.WhiteLabelController;
+import com.felzan.coffeeshop.adapters.web.whitelabel.requestbody.WhiteLabelRequest;
 import com.felzan.coffeeshop.application.models.Merchant;
-import com.felzan.coffeeshop.application.services.MerchantService;
+import com.felzan.coffeeshop.application.models.WhiteLabel;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Set;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,20 +49,29 @@ class MerchantControllerIT {
   @Autowired
   private ObjectMapper objectMapper;
   @Autowired
-  private MerchantService merchantService;
-
-  @AfterEach
-  void clearDb() {
-  }
+  private MerchantController merchantController;
+  @Autowired
+  private WhiteLabelController whiteLabelController;
 
   @Test
   @DisplayName(value = "Create a merchant with single working hour and single shift.")
   void create() throws Exception {
-
     var json = "{\n"
+        + "    \"name\": \"White label merchant\",\n"
+        + "    \"description\": \"White label description\"\n"
+        + "}";
+    ResultActions resultActions = mvc.perform(post(ConstantsController.WHITE_LABEL)
+        .contentType(APPLICATION_JSON)
+        .content(json));
+    var response = objectMapper
+        .readValue(resultActions.andReturn().getResponse().getContentAsString(),
+            WhiteLabel.class);
+
+    json = "{\n"
         + "    \"name\": \"Merchant name\",\n"
         + "    \"description\": \"Merchant description\",\n"
         + "    \"cnpj\": \"00011122333344\",\n"
+        + "    \"whiteLabelId\": " + response.getId() + ",\n"
         + "    \"workingHours\": [\n"
         + "        {\n"
         + "            \"days\": [\n"
@@ -81,7 +91,7 @@ class MerchantControllerIT {
         + "        }\n"
         + "    ]\n"
         + "}";
-    ResultActions resultActions = mvc.perform(post(ConstantsController.MERCHANT)
+    resultActions = mvc.perform(post(ConstantsController.MERCHANT)
         .contentType(APPLICATION_JSON)
         .content(json));
 
@@ -96,6 +106,7 @@ class MerchantControllerIT {
     assertEquals("Merchant name", merchant.getName());
     assertEquals("Merchant description", merchant.getDescription());
     assertEquals("00011122333344", merchant.getCnpj());
+    assertEquals("White label merchant", merchant.getWhiteLabel().getName());
     assertEquals(expectedDays, merchant.getWorkingHours().get(0).getDays());
     assertEquals("Week days", merchant.getWorkingHours().get(0).getDescription());
     assertEquals(LocalTime.parse("08:00:00"),
@@ -107,17 +118,25 @@ class MerchantControllerIT {
   @Test
   @DisplayName("")
   void findById() throws Exception {
-    var newMerchant = MerchantDTO.builder()
-        .name("Merchant 1")
-        //TODO: add more fields
+    WhiteLabelRequest whiteLabelRequest = WhiteLabelRequest.builder()
+        .name("WhiteLabel")
         .build();
-    merchantService.save(newMerchant);
+    WhiteLabel whiteLabel =
+        whiteLabelController.create(whiteLabelRequest).getBody();
 
-    ResultActions resultActions = mvc.perform(get(ConstantsController.MERCHANT.concat("/1")));
+    MerchantRequest request = MerchantRequest.builder()
+        .name("New merchant")
+        .cnpj("00011122333344")
+        .whiteLabelId(whiteLabel.getId())
+        .build();
+    Merchant body = merchantController.create(request).getBody();
+
+    ResultActions resultActions =
+        mvc.perform(get(ConstantsController.MERCHANT + "/" + body.getId().toString()));
     var merchant = objectMapper
         .readValue(resultActions.andReturn().getResponse().getContentAsString(),
             Merchant.class);
-    assertEquals(Long.valueOf(1), merchant.getId());
-    assertEquals("Merchant 1", merchant.getName());
+    assertEquals(body.getId(), merchant.getId());
+    assertEquals(body.getName(), merchant.getName());
   }
 }

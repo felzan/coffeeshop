@@ -13,6 +13,7 @@ import com.felzan.coffeeshop.adapters.mysql.user.UserRepository;
 import com.felzan.coffeeshop.adapters.mysql.whitelabel.WhiteLabelEntity;
 import com.felzan.coffeeshop.adapters.mysql.whitelabel.WhiteLabelRepository;
 import com.felzan.coffeeshop.adapters.web.ConstantsController;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,12 +43,12 @@ class UserControllerIT {
   private UserRepository userRepository;
   @Autowired
   private WhiteLabelRepository whiteLabelRepository;
-//
-//  @BeforeEach
-//  void cleanUp() {
-//    whiteLabelRepository.deleteAll();
-//    userRepository.deleteAll();
-//  }
+
+  @BeforeEach
+  void cleanUp() {
+    userRepository.deleteAll();
+    whiteLabelRepository.deleteAll();
+  }
 
   @Test
   @DisplayName(value = "Create user and return token.")
@@ -77,7 +78,7 @@ class UserControllerIT {
   }
 
   @Test
-  @DisplayName(value = "Login user existing user and return token")
+  @DisplayName(value = "Login existing user and return token")
   void login() throws Exception {
     WhiteLabelEntity whiteLabelEntity = WhiteLabelEntity.builder()
         .name("WhiteLabel")

@@ -10,6 +10,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class WhiteLabelDAO implements SaveWhiteLabel, FindWhiteLabel {
   }
 
   @Override
+  @Transactional
   public Optional<WhiteLabel> findById(Long id) {
     return whiteLabelRepository.findById(id)
         .map(mapper::whiteLabelEntityToModel);

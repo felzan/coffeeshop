@@ -45,7 +45,7 @@ public class WhiteLabelController {
   }
 
   @PutMapping(value = "{id}", consumes = APPLICATION_JSON_VALUE)
-  public ResponseEntity<WhiteLabel> create(@PathVariable Long id,
+  public ResponseEntity<WhiteLabel> update(@PathVariable Long id,
       @RequestBody WhiteLabelRequest request) {
     WhiteLabel updated = updateWhiteLabelIn.update(id, beanMapper.whiteLabelRequestToDTO(request));
     return ResponseEntity.status(HttpStatus.OK).body(updated);

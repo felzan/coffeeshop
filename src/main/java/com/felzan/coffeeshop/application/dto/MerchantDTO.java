@@ -6,14 +6,18 @@ import com.felzan.coffeeshop.application.models.Merchant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 public class MerchantDTO extends BaseDTO {
@@ -23,6 +27,7 @@ public class MerchantDTO extends BaseDTO {
   String cnpj;
   Double latitude;
   Double longitude;
+  Long whiteLabelId;
   @Builder.Default
   List<MerchantWorkingHourDTO> workingHours = new ArrayList<>();
 

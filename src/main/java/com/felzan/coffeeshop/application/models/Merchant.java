@@ -33,4 +33,5 @@ public class Merchant extends BaseModel {
   List<Order> orders = new ArrayList<>();
   @Builder.Default
   List<MerchantWorkingHour> workingHours = new ArrayList<>();
+  WhiteLabel whiteLabel;
 }

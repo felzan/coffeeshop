@@ -1,7 +1,9 @@
 package com.felzan.coffeeshop.application.services;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -11,13 +13,17 @@ import com.felzan.coffeeshop.application.dto.UserDTO;
 import com.felzan.coffeeshop.application.models.User;
 import com.felzan.coffeeshop.application.ports.out.FindUser;
 import com.felzan.coffeeshop.application.ports.out.SaveUser;
+import com.felzan.coffeeshop.infrastructure.mapper.BeanMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -34,6 +40,12 @@ class UserServiceTest {
   private PasswordEncoder passwordEncoder;
   @Mock
   private JWTTokenProvider jwtTokenProvider;
+
+  @BeforeEach
+  void setup() {
+    BeanMapper beanMapper = Mappers.getMapper(BeanMapper.class);
+    ReflectionTestUtils.setField(userService, "beanMapper", beanMapper);
+  }
 
   public static UserDTO givenUser() {
     return UserDTO.builder()
@@ -56,11 +68,12 @@ class UserServiceTest {
     UserDTO userDTO = spy(givenUser());
     when(passwordEncoder.encode("pass"))
         .thenReturn("{bcrypt}pass");
-    doNothing().when(saveUser).save(user());
+    doNothing().when(saveUser).save(any(User.class));
     when(jwtTokenProvider.generateToken(userDTO))
         .thenReturn(token);
 
-    userService.create(userDTO);
+    String token = userService.create(userDTO);
+    assertNotNull(token);
   }
 
   @Test

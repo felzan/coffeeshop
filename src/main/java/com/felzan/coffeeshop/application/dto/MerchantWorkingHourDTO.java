@@ -8,13 +8,17 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 public class MerchantWorkingHourDTO extends BaseDTO {

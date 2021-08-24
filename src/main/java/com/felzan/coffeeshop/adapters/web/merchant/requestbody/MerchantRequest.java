@@ -19,6 +19,7 @@ public class MerchantRequest {
   String cnpj;
   Double latitude;
   Double longitude;
+  Long whiteLabelId;
   List<MerchantWorkingHourRequest> workingHours;
 
   public MerchantDTO toDTO() {

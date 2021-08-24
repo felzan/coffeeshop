@@ -8,6 +8,7 @@ import com.felzan.coffeeshop.adapters.web.merchant.requestbody.MerchantRequest;
 import com.felzan.coffeeshop.application.models.Merchant;
 import com.felzan.coffeeshop.application.ports.in.merchant.CreateMerchantIn;
 import com.felzan.coffeeshop.application.ports.in.merchant.FindMerchantIn;
+import com.felzan.coffeeshop.infrastructure.mapper.BeanMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
@@ -27,10 +28,11 @@ public class MerchantController {
 
   CreateMerchantIn createMerchantIn;
   FindMerchantIn findMerchantIn;
+  BeanMapper beanMapper;
 
   @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
   public ResponseEntity<Merchant> create(@RequestBody MerchantRequest request) {
-    var saved = createMerchantIn.save(request.toDTO());
+    var saved = createMerchantIn.save(beanMapper.merchantRequestToDTO(request));
     return ResponseEntity.status(HttpStatus.CREATED).body(saved);
   }
 

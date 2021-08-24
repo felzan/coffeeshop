@@ -8,6 +8,7 @@ import static java.time.DayOfWeek.WEDNESDAY;
 import static java.time.LocalTime.MIDNIGHT;
 import static java.time.LocalTime.NOON;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import com.felzan.coffeeshop.application.dto.MerchantDTO;
@@ -16,17 +17,23 @@ import com.felzan.coffeeshop.application.dto.MerchantWorkingHourShiftDTO;
 import com.felzan.coffeeshop.application.models.Merchant;
 import com.felzan.coffeeshop.application.models.MerchantWorkingHour;
 import com.felzan.coffeeshop.application.models.MerchantWorkingHourShift;
+import com.felzan.coffeeshop.application.models.WhiteLabel;
 import com.felzan.coffeeshop.application.ports.out.FindMerchant;
+import com.felzan.coffeeshop.application.ports.out.FindWhiteLabel;
 import com.felzan.coffeeshop.application.ports.out.SaveMerchant;
+import com.felzan.coffeeshop.infrastructure.mapper.BeanMapper;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class MerchantServiceTest {
@@ -37,14 +44,29 @@ class MerchantServiceTest {
   private SaveMerchant saveMerchant;
   @Mock
   private FindMerchant findMerchant;
+  @Mock
+  private FindWhiteLabel findWhiteLabel;
+
+  @BeforeEach
+  void setup() {
+    BeanMapper beanMapper = Mappers.getMapper(BeanMapper.class);
+    ReflectionTestUtils.setField(merchantService, "beanMapper", beanMapper);
+  }
 
   @Test
   @DisplayName("Should save")
   void save() {
+
     var input = buildMerchantDTO();
     var merchant = buildMerchant();
+
+//    when(beanMapper.merchantDTOToModel(input))
+//        .thenReturn(merchant);
+    when(findWhiteLabel.findById(anyLong()))
+        .thenReturn(Optional.of(merchant.getWhiteLabel()));
     when(saveMerchant.save(any()))
         .thenReturn(merchant);
+
     merchantService.save(input);
   }
 
@@ -58,6 +80,9 @@ class MerchantServiceTest {
   }
 
   private Merchant buildMerchant() {
+    var whiteLabel = WhiteLabel.builder()
+        .id(1L)
+        .build();
     var shift = MerchantWorkingHourShift.builder()
         .id(1L)
         .begin(NOON)
@@ -76,6 +101,7 @@ class MerchantServiceTest {
         .cnpj("00000000000000")
         .latitude(-31.0)
         .longitude(-51.0)
+        .whiteLabel(whiteLabel)
         .workingHours(Collections.singletonList(workingHours))
         .build();
   }
@@ -96,6 +122,7 @@ class MerchantServiceTest {
         .cnpj("00000000000000")
         .latitude(-31.0)
         .longitude(-51.0)
+        .whiteLabelId(1L)
         .workingHours(Collections.singletonList(workingHours))
         .build();
   }
