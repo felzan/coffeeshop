@@ -1,6 +1,10 @@
 server:
   port: ${PORT:8080}
 spring:
+  application:
+    name: Coffeeshop
+  profiles:
+    active: local
   jpa:
     show-sql: true
     hibernate:
@@ -15,10 +19,6 @@ spring:
   h2:
     console:
       enabled: true
-  application:
-    name: Coffeeshop
-  profiles:
-    active: local
 
 jwt:
   secret: Very!!Secret<->Password!=
