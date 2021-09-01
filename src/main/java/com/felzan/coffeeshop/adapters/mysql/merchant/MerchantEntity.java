@@ -1,5 +1,6 @@
 package com.felzan.coffeeshop.adapters.mysql.merchant;
 
+import static javax.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
@@ -45,36 +46,11 @@ public class MerchantEntity extends BaseEntity {
   List<CategoryEntity> categories;
   @OneToMany(mappedBy = "merchant")
   List<OrderEntity> orders;
-  @OneToMany(mappedBy = "merchant")
+  @OneToMany(mappedBy = "merchant", cascade = ALL)
   List<MerchantWorkingHourEntity> workingHours;
   @ManyToOne
   @JoinColumn(name = "whitelabel_id")
   WhiteLabelEntity whiteLabel;
-
-  public MerchantEntity(Merchant model) {
-    var productList = model.getProducts().stream()
-        .map(ProductEntity::new)
-        .collect(Collectors.toList());
-    var categoryList = model.getCategories().stream()
-        .map(CategoryEntity::new)
-        .collect(Collectors.toList());
-    var orderList = model.getOrders().stream()
-        .map(OrderEntity::new)
-        .collect(Collectors.toList());
-    var workingHourList = model.getWorkingHours().stream()
-        .map(MerchantWorkingHourEntity::new)
-        .collect(Collectors.toList());
-
-    setName(model.getName());
-    setDescription(model.getDescription());
-    setCnpj(model.getCnpj());
-    setLatitude(model.getLatitude());
-    setLongitude(model.getLongitude());
-    setProducts(productList);
-    setCategories(categoryList);
-    setOrders(orderList);
-    setWorkingHours(workingHourList);
-  }
 
   public Merchant toModel() {
     var productsList = products.stream()

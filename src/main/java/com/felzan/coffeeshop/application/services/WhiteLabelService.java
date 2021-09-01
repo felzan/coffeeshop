@@ -7,7 +7,6 @@ import com.felzan.coffeeshop.application.models.WhiteLabel;
 import com.felzan.coffeeshop.application.ports.in.whitelable.CreateWhiteLabelIn;
 import com.felzan.coffeeshop.application.ports.in.whitelable.FindWhiteLabelIn;
 import com.felzan.coffeeshop.application.ports.in.whitelable.UpdateWhiteLabelIn;
-import com.felzan.coffeeshop.application.ports.out.FindUser;
 import com.felzan.coffeeshop.application.ports.out.FindWhiteLabel;
 import com.felzan.coffeeshop.application.ports.out.SaveWhiteLabel;
 import com.felzan.coffeeshop.infrastructure.mapper.BeanMapper;
@@ -22,7 +21,6 @@ public class WhiteLabelService implements CreateWhiteLabelIn, FindWhiteLabelIn, 
 
   SaveWhiteLabel saveWhiteLabel;
   FindWhiteLabel findWhiteLabel;
-  FindUser findUser;
   BeanMapper beanMapper;
 
   @Override
@@ -35,12 +33,11 @@ public class WhiteLabelService implements CreateWhiteLabelIn, FindWhiteLabelIn, 
     return findWhiteLabel.findById(id).orElseThrow();
   }
 
-  //FIXME: not working
   @Override
   public WhiteLabel update(Long id, WhiteLabelDTO dto) {
-    WhiteLabel savedWhiteLabel = findWhiteLabel.findById(id).orElseThrow();
-    WhiteLabel model = beanMapper.whiteLabelDTOToModel(dto);
-    savedWhiteLabel.setUsers(model.getUsers());
-    return saveWhiteLabel.save(savedWhiteLabel);
+    WhiteLabel found = findWhiteLabel.findById(id).orElseThrow();
+    found.setName(dto.getName());
+    found.setDescription(dto.getDescription());
+    return saveWhiteLabel.save(found);
   }
 }

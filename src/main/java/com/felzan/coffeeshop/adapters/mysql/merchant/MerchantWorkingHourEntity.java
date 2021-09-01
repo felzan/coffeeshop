@@ -1,5 +1,6 @@
 package com.felzan.coffeeshop.adapters.mysql.merchant;
 
+import static javax.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
@@ -39,20 +40,11 @@ public class MerchantWorkingHourEntity extends BaseEntity {
   @ElementCollection(targetClass = DayOfWeek.class)
   Set<DayOfWeek> days;
   String description;
-  @ManyToOne
+  @ManyToOne(cascade = ALL)
   @JoinColumn(name = "merchant_id")
   MerchantEntity merchant;
-  @OneToMany(mappedBy = "merchantWorkingHour")
+  @OneToMany(mappedBy = "merchantWorkingHour", cascade = ALL)
   List<MerchantWorkingHourShiftEntity> shifts;
-
-  public MerchantWorkingHourEntity(MerchantWorkingHour model) {
-    var shiftsList = model.getShifts().stream()
-        .map(MerchantWorkingHourShiftEntity::new)
-        .collect(Collectors.toList());
-    setDays(model.getDays());
-    setDescription(model.getDescription());
-    setShifts(shiftsList);
-  }
 
   public MerchantWorkingHour toModel() {
     var shiftsList = shifts.stream()

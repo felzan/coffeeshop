@@ -59,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(PUT, "/**/" + WHITE_LABEL + "/**").permitAll()
         .antMatchers(PATCH, "/**/" + USER + "/**").permitAll()
         .antMatchers("/h2-console/**/**").permitAll()
-        .anyRequest().authenticated()
+        .anyRequest().permitAll()
+        //TODO: use authentication
+//        .anyRequest().authenticated()
         .and().sessionManagement().sessionCreationPolicy(STATELESS)
         .and().logout().permitAll()
         .and()

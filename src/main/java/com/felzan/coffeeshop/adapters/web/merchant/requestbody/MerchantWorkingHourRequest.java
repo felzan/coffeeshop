@@ -5,6 +5,7 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +17,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MerchantWorkingHourRequest {
 
-  Set<DayOfWeek> days;
+  @NotNull Set<DayOfWeek> days;
   String description;
-  List<MerchantWorkingHourShiftRequest> shifts;
+  @NotNull List<MerchantWorkingHourShiftRequest> shifts;
 
   public MerchantWorkingHourDTO toDTO() {
     var shiftList = shifts.stream()

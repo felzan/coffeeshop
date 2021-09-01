@@ -8,7 +8,9 @@ import com.felzan.coffeeshop.adapters.web.merchant.requestbody.MerchantRequest;
 import com.felzan.coffeeshop.application.models.Merchant;
 import com.felzan.coffeeshop.application.ports.in.merchant.CreateMerchantIn;
 import com.felzan.coffeeshop.application.ports.in.merchant.FindMerchantIn;
+import com.felzan.coffeeshop.application.ports.in.merchant.UpdateMerchantIn;
 import com.felzan.coffeeshop.infrastructure.mapper.BeanMapper;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MerchantController {
 
   CreateMerchantIn createMerchantIn;
+  UpdateMerchantIn updateMerchantIn;
   FindMerchantIn findMerchantIn;
   BeanMapper beanMapper;
 
   @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE)
-  public ResponseEntity<Merchant> create(@RequestBody MerchantRequest request) {
+  public ResponseEntity<Merchant> create(@Valid @RequestBody MerchantRequest request) {
     var saved = createMerchantIn.save(beanMapper.merchantRequestToDTO(request));
     return ResponseEntity.status(HttpStatus.CREATED).body(saved);
   }
@@ -41,4 +45,10 @@ public class MerchantController {
     return ResponseEntity.status(HttpStatus.OK).body(findMerchantIn.findById(id));
   }
 
+  @PutMapping(value = "{id}", consumes = APPLICATION_JSON_VALUE)
+  public ResponseEntity<Merchant> update(@PathVariable Long id,
+      @Valid @RequestBody MerchantRequest request) {
+    Merchant updated = updateMerchantIn.update(id, beanMapper.merchantRequestToDTO(request));
+    return ResponseEntity.status(HttpStatus.OK).body(updated);
+  }
 }

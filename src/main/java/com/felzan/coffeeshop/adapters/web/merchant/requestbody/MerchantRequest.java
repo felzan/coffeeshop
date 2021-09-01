@@ -3,6 +3,9 @@ package com.felzan.coffeeshop.adapters.web.merchant.requestbody;
 import com.felzan.coffeeshop.application.dto.MerchantDTO;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,12 +17,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MerchantRequest {
 
-  String name;
+  @NotBlank String name;
   String description;
   String cnpj;
   Double latitude;
   Double longitude;
-  Long whiteLabelId;
+  @NotNull @Positive Long whiteLabelId;
   List<MerchantWorkingHourRequest> workingHours;
 
   public MerchantDTO toDTO() {

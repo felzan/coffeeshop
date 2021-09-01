@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.felzan.coffeeshop.application.dto.CartDTO;
 import com.felzan.coffeeshop.application.dto.PaymentInfoDTO;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class CartRequest {
 
   String sessionId;
-  Long userId;
-  Map<Long, Integer> cartItems;
+  @NotNull Long userId;
+  @NotNull Map<Long, Integer> cartItems;
   String status;
   String cardToken;
   @JsonAlias("cvv")

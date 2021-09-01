@@ -21,8 +21,12 @@ public class MerchantDAO implements SaveMerchant, FindMerchant {
 
   @Override
   public Merchant save(Merchant merchant) {
-    MerchantEntity toEntity = beanMapper.merchantModelToEntity(merchant);
-    MerchantEntity saved = merchantRepository.save(toEntity);
+    MerchantEntity entity = beanMapper.merchantModelToEntity(merchant);
+    entity.getWorkingHours().forEach(workingHour -> {
+      workingHour.setMerchant(entity);
+      workingHour.getShifts().forEach(shift -> shift.setMerchantWorkingHour(workingHour));
+    });
+    MerchantEntity saved = merchantRepository.save(entity);
     return beanMapper.merchantEntityToModel(saved);
   }
 

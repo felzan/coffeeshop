@@ -1,5 +1,6 @@
 package com.felzan.coffeeshop.adapters.mysql.merchant;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.felzan.coffeeshop.adapters.mysql.BaseEntity;
@@ -30,15 +31,9 @@ public class MerchantWorkingHourShiftEntity extends BaseEntity {
 
   LocalTime begin;
   LocalTime end;
-  @ManyToOne
+  @ManyToOne(cascade = PERSIST)
   @JoinColumn(name = "merchant_working_hour_id")
   MerchantWorkingHourEntity merchantWorkingHour;
-
-  public MerchantWorkingHourShiftEntity(MerchantWorkingHourShift model) {
-    setId(model.getId());
-    setBegin(model.getBegin());
-    setEnd(model.getEnd());
-  }
 
   public MerchantWorkingHourShift toModel() {
     return MerchantWorkingHourShift.builder()
