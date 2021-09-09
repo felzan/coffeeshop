@@ -1,5 +1,14 @@
 server:
   port: ${PORT:8080}
+elastic:
+  apm:
+    enabled: true
+    server-url: 'http://localhost:8200'
+    service-name: 'coffeeshop'
+    capture-body: 'ALL'
+    environment: dev
+    application-packages: com.felzan
+    log-level: INFO
 spring:
   application:
     name: Coffeeshop
@@ -19,6 +28,11 @@ spring:
   h2:
     console:
       enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
 
 jwt:
   secret: Very!!Secret<->Password!=
