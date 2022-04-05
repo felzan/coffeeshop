@@ -1,9 +1,9 @@
 package com.felzan.coffeeshop.application.models;
 
-import lombok.Data;
-import lombok.experimental.SuperBuilder;
-
 import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <p>BaseModel provides:</p>
@@ -15,9 +15,10 @@ import java.time.LocalDateTime;
  */
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public abstract class BaseModel {
 
-    private Long id;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+  private Long id;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }

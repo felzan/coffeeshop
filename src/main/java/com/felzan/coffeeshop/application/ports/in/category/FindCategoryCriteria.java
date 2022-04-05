@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class FindCategoryCriteria {
 
-    String name;
+  String name;
 }

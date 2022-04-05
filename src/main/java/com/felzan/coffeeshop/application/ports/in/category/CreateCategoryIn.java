@@ -4,5 +4,5 @@ import com.felzan.coffeeshop.application.dto.CategoryDTO;
 
 public interface CreateCategoryIn {
 
-    void create(CategoryDTO dto);
+  void create(CategoryDTO dto);
 }

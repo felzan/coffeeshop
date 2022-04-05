@@ -1,27 +1,28 @@
 package com.felzan.coffeeshop.application.models;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import static lombok.AccessLevel.PRIVATE;
+
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
-import static lombok.AccessLevel.PRIVATE;
-
 @Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode(callSuper = false)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category extends BaseModel {
 
-    String name;
-    String description;
-    String image;
-    String status;
-    boolean visible;
-    List<Product> products;
+  String name;
+  String description;
+  String image;
+  String status;
+  boolean visible;
+  List<Product> products;
 
 }
